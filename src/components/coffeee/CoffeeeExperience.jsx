@@ -137,7 +137,8 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
       setBotState("working");
       window.setTimeout(() => {
         setMessages((current) => [...current, { id: crypto.randomUUID(), role: "assistant", answer }]);
-        setBotState("done");
+        setBotState("explaining");
+        window.setTimeout(() => setBotState("completed"), 720);
       }, 380);
     }, 220);
   };
@@ -211,11 +212,11 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
             </div>
           ) : (
             <div className="coffeee-message-list">
-              <div className="coffeee-thread-intro"><span className="coffeee-thread-avatar"><Coffee size={17} /></span><div><strong>Coffeee</strong><p>Here’s what I found in Dhiraj’s portfolio.</p></div></div>
+              <div className="coffeee-thread-intro"><span className="coffeee-thread-avatar"><CoffeeeBot state={botState} compact /></span><div><strong>Coffeee</strong><p>Here’s what I found in Dhiraj’s portfolio.</p></div></div>
               {messages.map((message) => message.role === "user" ? (
                 <div className="coffeee-user-row" key={message.id}><div className="coffeee-user-message">{message.text}</div></div>
               ) : <AssistantAnswer answer={message.answer} navigate={navigate} key={message.id} />)}
-              {botState === "thinking" || botState === "working" ? <div className="coffeee-typing"><span /><span /><span /> Coffeee is preparing a response</div> : null}
+              {botState === "thinking" || botState === "working" ? <div className="coffeee-typing"><CoffeeeBot state={botState} compact /><span /><span /><span /> Coffeee is preparing a response</div> : null}
             </div>
           )}
         </section>
