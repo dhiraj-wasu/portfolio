@@ -183,7 +183,7 @@
 /* Coffeee mascot: original 5-column x 2-row pose sheet */
 .coffeee-bot{appearance:none;-webkit-appearance:none;border:0;background:transparent;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:default;color:inherit}
 .coffeee-bot:disabled{opacity:1;cursor:default}.coffeee-bot:not(:disabled){cursor:pointer}
-.coffeee-bot__sprite{display:block;width:144px;height:192px;flex:none;background-image:url("/assets/coffeee/coffeee-sprite.webp");background-repeat:no-repeat;background-size:500% 200%;background-position:0% 0%;filter:drop-shadow(0 9px 15px rgba(50,31,20,.16));will-change:transform}
+.coffeee-bot__sprite{display:block;width:144px;height:192px;flex:none;background-image:none;background-repeat:no-repeat;background-size:500% 200%;background-position:0% 0%;filter:drop-shadow(0 9px 15px rgba(50,31,20,.16));will-change:transform}
 .coffeee-bot__sprite.pose-idle{background-position:0% 0%}
 .coffeee-bot__sprite.pose-greeting{background-position:25% 0%}
 .coffeee-bot__sprite.pose-thinking{background-position:50% 0%}
