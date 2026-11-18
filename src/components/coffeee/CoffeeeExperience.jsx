@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight, ArrowUp, BriefcaseBusiness, Code2, Coffee, FolderCode,
-  GraduationCap, Mail, Moon, Plus, Search, Sparkles, Sun, UserRound, X
+  Mail, Moon, Plus, Search, Sun, UserRound, X
 } from "lucide-react";
 import CoffeeeBot from "./CoffeeeBot";
 import "./coffeee.css";
@@ -18,7 +18,7 @@ const destinations = [
   { label: "About", to: "/about", icon: UserRound },
   { label: "Projects", to: "/projects", icon: FolderCode },
   { label: "Skills", to: "/skills", icon: Code2 },
-  { label: "Experience", to: "/academics", icon: BriefcaseBusiness },
+  { label: "Education", to: "/academics", icon: BriefcaseBusiness },
   { label: "Contact", to: "/contact", icon: Mail },
 ];
 
@@ -31,7 +31,7 @@ const knowledge = [
     links: [{ label: "Read about Dhiraj", to: "/about" }],
   },
   {
-    keys: ["project", "trustops", "risktrack", "anus", "anuvada", "cache", "mesh", "medisure", "zerotrust"],
+    keys: ["project", "trustops", "risktrack", "anuvada", "cache", "mesh", "medisure", "zerotrust"],
     title: "Projects worth exploring",
     text: "Dhiraj's portfolio includes Anuvada AI, an AI Mesh System with queue-based distribution, ZeroTrust Defender, high-performance and thread-safe cache projects, and MediSure AI. Each project explores a different engineering problem.",
     tags: ["Anuvada AI", "AI Mesh", "ZeroTrust Defender", "Distributed Cache", "MediSure AI"],
@@ -87,15 +87,6 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
   const [botState, setBotState] = useState("idle");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    if (view !== "chat" || messages.length === 0) {
-      setBotState("idle");
-      return;
-    }
-    const last = messages[messages.length - 1];
-    setBotState(last.role === "user" ? "thinking" : "idle");
-  }, [messages, view]);
-
   const startChat = (prompt = question) => {
     const clean = prompt.trim();
     if (!clean) return;
@@ -106,8 +97,17 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
     setMessages((current) => [
       ...current,
       { id: crypto.randomUUID(), role: "user", text: clean },
-      { id: crypto.randomUUID(), role: "assistant", answer },
     ]);
+    window.setTimeout(() => {
+      setBotState("working");
+      window.setTimeout(() => {
+        setMessages((current) => [
+          ...current,
+          { id: crypto.randomUUID(), role: "assistant", answer },
+        ]);
+        setBotState("done");
+      }, 650);
+    }, 420);
   };
 
   const openSection = (to) => navigate(to);
