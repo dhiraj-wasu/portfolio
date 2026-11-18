@@ -25,7 +25,7 @@ export default function CoffeeeLanding({theme,toggleTheme,question,setQuestion,s
         <button onClick={()=>navigate("/about")}>About</button><button onClick={()=>navigate("/projects")}>Projects</button><button onClick={()=>navigate("/academics")}>Experience</button>
       </nav>
       <div className="coffeee-landing-actions">
-        <a className="coffeee-resume-link" href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume">Resume <ArrowUpRight size={14}/></a>
+        <a className="coffeee-resume-link" href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume">Request resume <ArrowUpRight size={14}/></a>
         <a className="coffeee-social-link" href="https://github.com/dhiraj-wasu" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17}/></a>
         <a className="coffeee-social-link" href="https://www.linkedin.com/in/dhiraj-wasu/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17}/></a>
         <button className="coffeee-theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">{theme==="dark"?<Sun size={17}/>:<Moon size={17}/>}</button>
