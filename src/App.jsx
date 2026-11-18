@@ -81,7 +81,7 @@ function App() {
   const [theme, setTheme] = useState(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme) return storedTheme;
-    return "dark";
+    return "light";
   });
   const [sideNavOpen, setSideNavOpen] = useState(false);
 
