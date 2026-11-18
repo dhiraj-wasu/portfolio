@@ -26,12 +26,12 @@ Tag.displayName = "Tag";
 
 const SOCIAL_LINKS = [
   {
-    href: "https://github.com/your-github",
+    href: "https://github.com/dhiraj-wasu",
     icon: <Github className="w-5 h-5" />,
     title: "GitHub",
   },
   {
-    href: "https://www.linkedin.com/in/your-linkedin",
+    href: "https://www.linkedin.com/in/dhiraj-wasu/",
     icon: <Linkedin className="w-5 h-5" />,
     title: "LinkedIn",
   },
@@ -49,10 +49,10 @@ const TAGS = [
   "FastAPI & Django",
   "AI & Automation",
   "Concurrency",
-  "Docker & Microservices",
+  "Docker & DevOps",
 ];
 
-const RESUME_URL = "https://your-resume-link";
+const RESUME_URL = "https://www.linkedin.com/in/dhiraj-wasu/";
 
 export default memo(function About() {
   const socialLinksElements = useMemo(

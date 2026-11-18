@@ -81,7 +81,7 @@ EducationCard.displayName = "EducationCard";
 // --- YOUR ACADEMIC DATA (UPDATED) ---
 const ACADEMICS_DATA = [
   {
-    logo: "/assets/logos/sggsiet.png",
+    logo: "/assets/logos/sggsiet.svg",
     alt: "SGGSIE&T Logo",
     title:
       "Shri Guru Gobind Singhji Institute of Engineering and Technology, Nanded",
@@ -92,7 +92,7 @@ const ACADEMICS_DATA = [
     score: "8.40 / 10",
   },
   {
-    logo: "/assets/logos/ghraisoini.png",
+    logo: "/assets/logos/ghraisoini.svg",
     alt: "G.H. Raisoni Institute of Engineering & Technology Logo",
     title: "G.H. Raisoni Institute of Engineering & Technology, Nagpur",
     link: "https://ghrietn.raisoni.net/",

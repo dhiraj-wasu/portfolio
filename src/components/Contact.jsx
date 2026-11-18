@@ -130,13 +130,13 @@ function ContactComponent() {
 
         <motion.div variants={itemVariants}>
           <a
-            href="mailto:shashankraj0124@gmail.com"
+            href="mailto:dhirajwasu120@gmail.com"
             className="flex justify-center items-center gap-2 text-primary text-lg font-medium hover:underline transition-colors duration-200"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Mail className="w-5 h-5" />
-            shashankraj0124@gmail.com
+            dhirajwasu120@gmail.com
           </a>
         </motion.div>
 

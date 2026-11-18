@@ -80,12 +80,72 @@ ProjectCard.displayName = "ProjectCard";
 function ProjectsComponent() {
   const projectsData = useMemo(
     () => [
-      { title: "Text File Compressor", desc: "Built a robust, lossless text file compressor in C++ using the LZW algorithm, applying OOP and advanced algorithms. Achieved ~44% file size reduction on real-world files with efficient compression and decompression.", tags: ["C++", "LZW Algorithm", "OOPS"], links: [{ type: "code", href: "https://github.com/shashank2401/file-compressor-in-cpp" }] },
-      { title: "Pathfinding Visualizer", desc: "Interactive C++/SFML visualizer for Dijkstra's and A* algorithms. Features dynamic obstacles, diagonal movement, OOP, and optimized data structures for smooth, real-time animations.", tags: ["C++", "SFML", "Dijkstra's", "A*", "OOPS", "Data Structures"], links: [{ type: "code", href: "https://github.com/shashank2401/pathfinding-visualizer-in-cpp" }] },
-      { title: "Codeforces Visualizer", desc: "A minimal web app to view and compare Codeforces profiles. Shows key stats, rating history, and performance trends with clean visualizations. Built for fast, distraction-free, side-by-side comparisons.", tags: ["React", "Vite", "JavaScript", "Tailwind CSS", "Codeforces API"], links: [{ type: "demo", href: "https://cf-visualizer-rho.vercel.app" }, { type: "code", href: "https://github.com/shashank2401/cf-visualizer" }] },
-      { title: "GitHub Profile Visualizer", desc: "A dynamic app for exploring and comparing GitHub user profiles. Visualizes rich statistics, activity timelines, and repository insights, including a contribution heatmap. Supports side-by-side comparisons and offers both dark and light modes.", tags: ["React", "Vite", "JavaScript", "Tailwind CSS", "GitHub API"], links: [{ type: "demo", href: "https://github-profile-visualizer-six.vercel.app/" }, { type: "code", href: "https://github.com/shashank2401/github-profile-visualizer" }] },
-      { title: "Weather App", desc: "A sleek, responsive weather application delivering real-time weather updates for any city. Features location-based forecasts, intuitive search suggestions, and seamless toggling between Celsius and Fahrenheit.", tags: ["HTML", "CSS", "JavaScript", "Weather API", "Responsive Design"], links: [{ type: "demo", href: "https://weather-app-zeta-three-62.vercel.app/" }, { type: "code", href: "https://github.com/shashank2401/weather-app" }] },
-      { title: "Soil-Water Characteristic Curve Prediction", desc: "Used Artificial Neural Networks (ANNs) to predict SWCC parameters from soil properties for plastic soils. Improved geotechnical prediction for slope stability and foundation design.", tags: ["Python", "TensorFlow", "ANN", "Soil Mechanics", "Data Analysis"], links: [{ type: "code", href: "https://github.com/shashank2401/swcc-prediction-using-ann" }] },
+      {
+        title: "Anuvada AI – Guidance System",
+        desc: "A philosophy-aware RAG system featuring intent-based source routing and quote-faithful retrieval to deliver doctrinally consistent guidance without hallucination.",
+        tags: ["Python", "FastAPI", "RAG", "LLMs", "Vector DB"],
+        links: [
+          {
+            type: "code",
+            href: "https://github.com/dhiraj-wasu/Anuvada_AI-A-Philosophy-Aware-Guidance-System",
+          },
+        ],
+      },
+      {
+        title: "AI Mesh System with Queue Distribution",
+        desc: "Distributed AI task orchestration system with FastAPI, Redis fault-tolerant queues, dynamic worker heartbeats, task retries, and automated load scaling.",
+        tags: ["FastAPI", "Redis", "Distributed Systems", "Task Queues", "Python"],
+        links: [
+          {
+            type: "code",
+            href: "https://github.com/dhiraj-wasu/AI-Mesh-System-with-Queue-Based-Distribution",
+          },
+        ],
+      },
+      {
+        title: "ZeroTrust Defender (AI Ransomware Detection)",
+        desc: "AI-driven distributed ransomware defense architecture featuring real-time endpoint threat detection, automated isolation, and centralized threat intelligence orchestration (EDR + SOAR).",
+        tags: ["Python", "Cybersecurity", "EDR / SOAR", "Machine Learning", "Distributed Systems"],
+        links: [
+          {
+            type: "code",
+            href: "https://github.com/dhiraj-wasu/ZeroTrust-Defender-AI-Driven-Ransomware-Detection",
+          },
+        ],
+      },
+      {
+        title: "High-Performance In-Memory Cache",
+        desc: "Speed-focused, low-latency cache engine developed in C++ using multithreading, custom memory structures, and optimized key-value eviction algorithms to maximize throughput.",
+        tags: ["C++", "Multithreading", "Cache Architecture", "Low Latency", "Systems"],
+        links: [
+          {
+            type: "code",
+            href: "https://github.com/dhiraj-wasu/High-Performance-Cache-Speed-focused-C-",
+          },
+        ],
+      },
+      {
+        title: "Thread-Safe Distributed Cache",
+        desc: "Concurrency-focused distributed caching layer engineered in Java with robust thread safety, locking mechanisms, eviction policies, and high-concurrency throughput.",
+        tags: ["Java", "Concurrency", "Distributed Systems", "Thread Safety", "Data Structures"],
+        links: [
+          {
+            type: "code",
+            href: "https://github.com/dhiraj-wasu/Thread-Safe-Distributed-Cache-Concurrency-focused-JAVA-",
+          },
+        ],
+      },
+      {
+        title: "MediSure AI (Emergency Response Orchestrator)",
+        desc: "Intelligent healthcare response platform powered by a FastAPI backend orchestrator, real-time emergency dispatch coordination, and AI-assisted clinical data aggregation.",
+        tags: ["Python", "FastAPI", "Microservices", "REST APIs", "Healthcare Tech"],
+        links: [
+          {
+            type: "code",
+            href: "https://github.com/dhiraj-wasu/MediSure-AI",
+          },
+        ],
+      },
     ],
     []
   );
@@ -107,7 +167,7 @@ function ProjectsComponent() {
                 Projects
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-center mb-10">
-                Here are some of the projects I've worked on, ranging from algorithm visualizers and utilities to frontend tools and machine learning models. Each project reflects my passion for clean design, efficient problem-solving, and practical implementation.
+                Here are some of the key systems and applications I've built, focusing on backend scalability, distributed architectures, intelligent RAG pipelines, and high-concurrency systems.
             </p>
         </motion.div>
 

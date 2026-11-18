@@ -86,19 +86,79 @@ HighlightItem.displayName = "HighlightItem";
 // --- Main Component ---
 function CompetitiveProgrammingComponent() {
   const cpPlatforms = useMemo(() => [
-    { name: "Codeforces", logo: "/assets/logos/codeforces.png", handle: "shashank2401", profileUrl: "https://codeforces.com/profile/shashank2401", stats: [{ label: "Max Rating", value: "1600" }, { label: "Rank", value: "Expert" }] },
-    { name: "CodeChef", logo: "/assets/logos/codechef.svg", handle: "shashankraj24", profileUrl: "https://www.codechef.com/users/shashankraj24", stats: [{ label: "Max Rating", value: "1954" }, { label: "Rank", value: "4-Star" }] },
-    { name: "LeetCode", logo: "/assets/logos/leetcode.png", handle: "shashank2401", profileUrl: "https://leetcode.com/u/shashank2401/", stats: [{ label: "Max Rating", value: "2022" }, { label: "Badge", value: "Knight" }] },
-    { name: "AtCoder", logo: "/assets/logos/atcoder.png", handle: "shashank24", profileUrl: "https://atcoder.jp/users/shashank24", stats: [{ label: "Max Rating", value: "927" }, { label: "Rank", value: "6 Kyu" }] },
+    {
+      name: "HackerRank",
+      logo: "/assets/logos/hackerrank.svg",
+      handle: "dhirajwasu120",
+      profileUrl: "https://www.hackerrank.com/profile/dhirajwasu120",
+      stats: [
+        { label: "Domain", value: "Problem Solving" },
+        { label: "Focus", value: "Algorithms & DS" },
+      ],
+    },
+    {
+      name: "GitHub",
+      logo: "/assets/logos/github.svg",
+      handle: "dhiraj-wasu",
+      profileUrl: "https://github.com/dhiraj-wasu",
+      stats: [
+        { label: "Repositories", value: "18+ Repos" },
+        { label: "Focus", value: "Backend & Systems" },
+      ],
+    },
+    {
+      name: "LeetCode",
+      logo: "/assets/logos/leetcode.png",
+      handle: "dhiraj-wasu",
+      profileUrl: "https://leetcode.com/u/dhiraj-wasu/",
+      stats: [
+        { label: "Domain", value: "Data Structures" },
+        { label: "Languages", value: "C++, Java, Python" },
+      ],
+    },
+    {
+      name: "CodeChef",
+      logo: "/assets/logos/codechef.svg",
+      handle: "dhiraj-wasu",
+      profileUrl: "https://www.codechef.com",
+      stats: [
+        { label: "Category", value: "Competitive Practice" },
+        { label: "Focus", value: "Contests & DSA" },
+      ],
+    },
   ], []);
 
   const highlights = useMemo(() => [
-    { text: "Solved over ", linkText: "900+ problems", href: "https://codolio.com/profile/shashank24", rest: " across multiple CP platforms, enhancing algorithmic thinking and coding efficiency." },
-    { text: "Participated in more than ", linkText: "100 contests", href: "https://codolio.com/profile/shashank24", rest: ", consistently testing and improving my problem-solving skills." },
-    { text: "Ranked among the top with a ", linkText: "Global Rank of 755", href: "https://codeforces.com/contest/2114/standings/participant/211255102#p211255102", rest: " in Codeforces Round 1027 (Div. 3)." },
-    { text: "Achieved a notable ", linkText: "Global Rank of 849", href: "https://codeforces.com/contest/2090/standings/participant/206688395#p206688395", rest: " in Codeforces Round 1012 (Div. 2)." },
-    { text: "Earned a ", linkText: "Top 100 finish (Rank 99)", href: "https://www.codechef.com/rankings/START154D?itemsPerPage=100&order=asc&page=1&sortBy=rank", rest: " in CodeChef Starters 154 (Div. 4)." },
-    { text: "Demonstrated strong performance with a ", linkText: "Global Rank of 120", href: "https://www.codechef.com/rankings/START187B?itemsPerPage=100&order=asc&page=1&sortBy=rank", rest: " in CodeChef Starters 187 (Div. 2)." },
+    {
+      text: "Awarded ",
+      linkText: "Student of the Institute & Department (2023)",
+      href: "https://www.linkedin.com/in/dhiraj-wasu/",
+      rest: " for academic excellence, technical leadership, and engineering achievements.",
+    },
+    {
+      text: "Secured 1st Place as ",
+      linkText: "Winner – State Level Project Competition (DIPEX 2023)",
+      href: "https://www.linkedin.com/in/dhiraj-wasu/",
+      rest: " for outstanding technical innovation and practical engineering execution.",
+    },
+    {
+      text: "Solid foundation in ",
+      linkText: "Data Structures & Algorithms",
+      href: "https://www.hackerrank.com/profile/dhirajwasu120",
+      rest: " with extensive practical implementations in C++, Java, and Python.",
+    },
+    {
+      text: "Engineered ",
+      linkText: "High-Performance In-Memory Cache",
+      href: "https://github.com/dhiraj-wasu/High-Performance-Cache-Speed-focused-C-",
+      rest: " in C++ with custom memory management and multithreaded concurrency.",
+    },
+    {
+      text: "Architected ",
+      linkText: "Distributed AI Task Queues",
+      href: "https://github.com/dhiraj-wasu/AI-Mesh-System-with-Queue-Based-Distribution",
+      rest: " using FastAPI and Redis for reliable asynchronous task dispatch and fault tolerance.",
+    },
   ], []);
 
   return (
@@ -113,12 +173,12 @@ function CompetitiveProgrammingComponent() {
           {/* --- THIS IS THE FIXED HEADING --- */}
           <h2 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight flex flex-col sm:flex-row items-center sm:items-baseline justify-center gap-2 sm:gap-4 text-foreground text-center">
             <Swords className="w-8 h-8 text-primary drop-shadow-sm flex-shrink-0" />
-            <span>Competitive Programming</span>
+            <span>Problem Solving & Achievements</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            My competitive programming journey has been filled with challenging
-            problems, thrilling contests, and constant learning. Here you’ll find my
-            profiles, stats, and some highlights from major platforms.
+            My engineering and problem-solving journey focuses on strong algorithmic
+            foundations, low-latency system design, and distributed architectures.
+            Here are my coding profiles, stats, and key recognitions.
           </p>
         </motion.div>
 
@@ -136,11 +196,11 @@ function CompetitiveProgrammingComponent() {
         <motion.div variants={itemVariants} className="w-full max-w-3xl">
           <div className="bg-white/90 dark:bg-neutral-900/80 border border-neutral-200 dark:border-neutral-700 rounded-2xl shadow p-6">
             <h3 className="text-xl font-semibold text-foreground mb-4">
-              Key Highlights
+              Key Highlights & Achievements
             </h3>
             <p className="text-base text-muted-foreground mb-4">
-              <a href="https://codolio.com/profile/shashank24" className="text-primary hover:underline dark:hover:text-primary-foreground/70 transition font-medium" target="_blank" rel="noopener noreferrer">
-                View my Codolio Profile for more details
+              <a href="https://github.com/dhiraj-wasu" className="text-primary hover:underline dark:hover:text-primary-foreground/70 transition font-medium" target="_blank" rel="noopener noreferrer">
+                Explore my technical projects and contributions on GitHub
               </a>
             </p>
             <motion.ul
