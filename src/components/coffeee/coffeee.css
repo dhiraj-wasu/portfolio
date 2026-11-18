@@ -179,22 +179,30 @@
 @media(prefers-reduced-motion:reduce){.coffeee-landing *,.coffeee-landing *:before,.coffeee-landing *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 
-/* Coffeee Bot — use the checked-in SVG asset directly; no generated sprite required */
+
+/* Coffeee mascot: original 5-column x 2-row pose sheet */
 .coffeee-bot{appearance:none;-webkit-appearance:none;border:0;background:transparent;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:default;color:inherit}
 .coffeee-bot:disabled{opacity:1;cursor:default}.coffeee-bot:not(:disabled){cursor:pointer}
-.coffeee-bot__art{display:block;width:144px;height:172px;object-fit:contain;flex:none;filter:drop-shadow(0 9px 15px rgba(50,31,20,.16));user-select:none}
-.coffeee-bot--compact .coffeee-bot__art{width:42px;height:52px;filter:none}
+.coffeee-bot__sprite{display:block;width:144px;height:192px;flex:none;background-image:url("/assets/coffeee/coffeee-sprite.webp");background-repeat:no-repeat;background-size:500% 200%;background-position:0% 0%;filter:drop-shadow(0 9px 15px rgba(50,31,20,.16));will-change:transform}
+.coffeee-bot__sprite.pose-idle{background-position:0% 0%}
+.coffeee-bot__sprite.pose-greeting{background-position:25% 0%}
+.coffeee-bot__sprite.pose-thinking{background-position:50% 0%}
+.coffeee-bot__sprite.pose-working{background-position:75% 0%}
+.coffeee-bot__sprite.pose-explaining{background-position:100% 0%}
+.coffeee-bot__sprite.pose-completed{background-position:0% 100%}
+.coffeee-bot__sprite.pose-curious{background-position:50% 100%}
+.coffeee-bot__sprite.pose-relaxing{background-position:75% 100%}
+.coffeee-bot--compact .coffeee-bot__sprite{width:42px;height:56px;filter:none}
+.coffeee-empty-bot .coffeee-bot__sprite{width:132px;height:176px}
+.coffeee-hero-mascot .coffeee-bot__sprite{width:126px;height:168px}
 .coffeee-bot__bubble{display:block;padding:7px 11px;margin-bottom:5px;border:1px solid var(--c-line);border-radius:999px;background:var(--c-panel);color:var(--c-muted);font-size:10px;box-shadow:var(--c-shadow)}
 .coffeee-bot__status{display:flex;align-items:center;gap:6px;margin-top:-2px;color:var(--c-muted);font-size:9px}
 .coffeee-bot__status>span:first-child{width:6px;height:6px;border-radius:50%;background:#7f9d78}
 .coffeee-bot__status>span.is-busy{background:#c39a75;animation:coffeee-pulse 1s infinite}
-.coffeee-empty-bot .coffeee-bot__art{width:132px;height:158px}
-.coffeee-hero-mascot .coffeee-bot__art{width:126px;height:151px}
 .coffeee-hero-mascot .coffeee-bot__status{display:none}
 .coffeee-hero-mascot .coffeee-bot__bubble{margin-bottom:-3px}
 .coffeee-thread-avatar{overflow:hidden;padding:0!important;background:transparent!important}
-.coffeee-thread-avatar .coffeee-bot__art{width:34px;height:42px;filter:none}
-.coffeee-typing{min-height:58px}
-.coffeee-typing .coffeee-bot--compact{margin-right:4px}
-@media(max-width:760px){.coffeee-empty-bot .coffeee-bot__art{width:108px;height:130px}.coffeee-hero-mascot .coffeee-bot__art{width:96px;height:115px}}
+.coffeee-thread-avatar .coffeee-bot__sprite{width:34px;height:46px;filter:none}
+.coffeee-typing{min-height:58px}.coffeee-typing .coffeee-bot--compact{margin-right:4px}
+@media(max-width:760px){.coffeee-empty-bot .coffeee-bot__sprite{width:108px;height:144px}.coffeee-hero-mascot .coffeee-bot__sprite{width:96px;height:128px}}
 @media(prefers-reduced-motion:reduce){.coffeee-bot__status>span.is-busy{animation:none}}
