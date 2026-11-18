@@ -36,6 +36,7 @@ const poseClass = {
 
 export default function CoffeeeBot({ state = "idle", compact = false, onClick }) {
   const reaction = reactions[state] || reactions.idle;
+  const spriteUrl = `${import.meta.env.BASE_URL}assets/coffeee/coffeee-sprite.webp`;
   return (
     <motion.button
       type="button"
@@ -65,6 +66,7 @@ export default function CoffeeeBot({ state = "idle", compact = false, onClick })
         className={`coffeee-bot__sprite ${poseClass[state] || poseClass.idle}`}
         role="img"
         aria-label="Coffeee Bot mascot"
+        style={{ backgroundImage: `url("${spriteUrl}")` }}
         animate={motionByState[state] || motionByState.idle}
         transition={{
           duration: state === "completed" ? 0.58 : state === "working" ? 0.72 : 2.8,
