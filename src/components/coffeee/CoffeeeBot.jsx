@@ -54,7 +54,7 @@ export default function CoffeeeBot({ state = "idle", compact = false, onClick })
       >
         {!imageFailed ? (
           <img
-            src="/assets/coffeee-bot.webp"
+            src="/assets/coffeee-bot.svg"
             alt="Coffeee Bot, the portfolio's coffee-cup mascot"
             onError={() => setImageFailed(true)}
             draggable="false"
