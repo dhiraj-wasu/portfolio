@@ -36,10 +36,10 @@ export default function CoffeeeLanding({theme,toggleTheme,question,setQuestion,s
         <motion.div className="coffeee-hero-mascot" initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{duration:.55}}>
           <CoffeeeBot state="idle" onClick={()=>submitQuestion("Who is Dhiraj?")}/>
         </motion.div>
-        <div className="coffeee-hero-kicker">A LITTLE INTRODUCTION</div>
-        <motion.h1 initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:.08}}>Hello. I’m Dhiraj.</motion.h1>
-        <motion.h2 initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:.14}}>An engineer who enjoys building things<br className="coffeee-desktop-break"/> that solve real problems.</motion.h2>
-        <p className="coffeee-hero-copy">Ask me about my work, engineering journey, projects, or what I’m currently exploring.</p>
+        <div className="coffeee-hero-kicker">YOUR PERSONAL PORTFOLIO ASSISTANT</div>
+        <motion.h1 initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:.08}}>Hey, I’m Coffeee!</motion.h1>
+        <motion.h2 initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:.14}}>Let’s explore Dhiraj’s world.</motion.h2>
+        <p className="coffeee-hero-copy">I can tell you about his engineering journey, projects, skills and everything he’s building.</p>
         <form className="coffeee-landing-composer" onSubmit={e=>{e.preventDefault();submitQuestion();}}>
           <textarea value={question} onChange={e=>setQuestion(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submitQuestion();}}} placeholder="Ask anything about Dhiraj..." rows={2} aria-label="Ask Coffeee about Dhiraj"/>
           <div className="coffeee-landing-composer-bottom"><span className="coffeee-composer-hint"><Coffee size={15}/> Coffeee is ready to help you explore</span><button type="submit" disabled={!question.trim()} aria-label="Send question"><ArrowUp size={18}/></button></div>
