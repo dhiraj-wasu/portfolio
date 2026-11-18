@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowUp, BriefcaseBusiness, ChevronDown, Code2, Coffee, ExternalLink,
-  FolderCode, GraduationCap, Mail, MessageSquare, Moon, Plus, Search,
+  ArrowUp, ChevronDown, Code2, Coffee, ExternalLink,
+  FolderCode, GraduationCap, Mail, MessageSquare, Moon, Plus,
   Sun, UserRound, X
 } from "lucide-react";
 import CoffeeeBot from "./CoffeeeBot";
@@ -149,7 +149,6 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
     setSidebarOpen(false);
   };
 
-  const latestQuestion = useMemo(() => [...messages].reverse().find((item) => item.role === "user")?.text, [messages]);
 
   return (
     <div className={`coffeee-app theme-${theme}`}>
