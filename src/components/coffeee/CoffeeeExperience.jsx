@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUp, ChevronDown, Code2, Coffee, ExternalLink,
   FolderCode, GraduationCap, Mail, MessageSquare, Moon, Plus,
   Sun, UserRound, X
 } from "lucide-react";
-import CoffeeeBot from "./CoffeeeBot";
 import CoffeeeLanding from "./CoffeeeLanding";
 import "./coffeee.css";
 
