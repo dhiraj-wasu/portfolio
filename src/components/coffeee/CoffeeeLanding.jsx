@@ -34,7 +34,7 @@ export default function CoffeeeLanding({theme,toggleTheme,question,setQuestion,s
     <main className="coffeee-landing-main">
       <section className="coffeee-hero">
         <motion.div className="coffeee-hero-mascot" initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{duration:.55}}>
-          <CoffeeeBot state="idle" onClick={()=>submitQuestion("Who is Dhiraj?")}/>
+          <CoffeeeBot state="greeting" onClick={()=>submitQuestion("Who is Dhiraj?")}/>
         </motion.div>
         <div className="coffeee-hero-kicker">YOUR PERSONAL PORTFOLIO ASSISTANT</div>
         <motion.h1 initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:.08}}>Hey, I’m Coffeee!</motion.h1>
