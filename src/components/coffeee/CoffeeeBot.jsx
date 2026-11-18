@@ -13,19 +13,29 @@ const reactions = {
 };
 
 const motionByState = {
-  idle: { y: [0, -5, 0], rotate: [0, 0.5, 0] },
+  idle: { y: [0, -4, 0] },
   greeting: { y: [0, -5, 0], rotate: [0, 2, 0] },
-  curious: { y: [0, -3, 0], rotate: [0, -3, 2, 0] },
+  curious: { y: [0, -3, 0], rotate: [0, -2, 2, 0] },
   thinking: { y: [0, -2, 0], rotate: [0, -2, 0] },
   working: { y: [0, -2, 0], rotate: [0, -1, 1, 0] },
   explaining: { y: [0, -4, 0], rotate: [0, 1, 0] },
-  completed: { y: [0, -14, 0], rotate: [0, 0, 0] },
+  completed: { y: [0, -12, 0] },
   relaxing: { y: [0, -2, 0], rotate: [0, 1, 0] },
+};
+
+const poseClass = {
+  idle: "pose-idle",
+  greeting: "pose-greeting",
+  thinking: "pose-thinking",
+  working: "pose-working",
+  explaining: "pose-explaining",
+  completed: "pose-completed",
+  curious: "pose-curious",
+  relaxing: "pose-relaxing",
 };
 
 export default function CoffeeeBot({ state = "idle", compact = false, onClick }) {
   const reaction = reactions[state] || reactions.idle;
-  const movement = motionByState[state] || motionByState.idle;
   return (
     <motion.button
       type="button"
@@ -50,13 +60,12 @@ export default function CoffeeeBot({ state = "idle", compact = false, onClick })
           </motion.span>
         )}
       </AnimatePresence>
-      <motion.img
+      <motion.span
         key={state}
-        src="/assets/coffeee-bot.svg"
-        alt="Coffeee Bot, a friendly coffee cup robot"
-        className="coffeee-bot__art"
-        draggable="false"
-        animate={movement}
+        className={`coffeee-bot__sprite ${poseClass[state] || poseClass.idle}`}
+        role="img"
+        aria-label="Coffeee Bot mascot"
+        animate={motionByState[state] || motionByState.idle}
         transition={{
           duration: state === "completed" ? 0.58 : state === "working" ? 0.72 : 2.8,
           repeat: state === "completed" ? 0 : Infinity,
