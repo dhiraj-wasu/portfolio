@@ -7,6 +7,7 @@ import {
   Sun, UserRound, X
 } from "lucide-react";
 import CoffeeeBot from "./CoffeeeBot";
+import CoffeeeLanding from "./CoffeeeLanding";
 import "./coffeee.css";
 
 const navigation = [
@@ -114,6 +115,7 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
   const [activeTopic, setActiveTopic] = useState("A new conversation");
   const [botState, setBotState] = useState("idle");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [view, setView] = useState("landing");
 
   const suggestions = [
     "Who is Dhiraj?",
@@ -128,6 +130,7 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
     const answer = resolveAnswer(clean);
     const topic = clean.length > 32 ? clean.slice(0, 32) + "…" : clean;
     setQuestion("");
+    setView("chat");
     setActiveTopic(topic);
     setHistory((current) => current.includes(topic) ? current : [topic, ...current].slice(0, 8));
     setMessages((current) => [...current, { id: crypto.randomUUID(), role: "user", text: clean }]);
@@ -144,11 +147,16 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
   const newConversation = () => {
     setMessages([]);
     setQuestion("");
+    setView("landing");
     setActiveTopic("A new conversation");
     setBotState("idle");
     setSidebarOpen(false);
   };
 
+
+  if (view === "landing") {
+    return <CoffeeeLanding theme={theme} toggleTheme={toggleTheme} question={question} setQuestion={setQuestion} submitQuestion={submitQuestion} navigate={navigate} newConversation={newConversation} />;
+  }
 
   return (
     <div className={`coffeee-app theme-${theme}`}>
