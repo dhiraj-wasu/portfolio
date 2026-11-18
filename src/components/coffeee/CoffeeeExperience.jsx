@@ -6,6 +6,7 @@ import {
   Sun, UserRound, X
 } from "lucide-react";
 import CoffeeeLanding from "./CoffeeeLanding";
+import CoffeeeBot from "./CoffeeeBot";
 import "./coffeee.css";
 
 const navigation = [
