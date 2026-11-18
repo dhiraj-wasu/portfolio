@@ -81,7 +81,8 @@ function ContactComponent() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("https://formspree.io/f/mldnaeeb", {
+      const formspreeId = import.meta.env.VITE_FORMSPREE_ID || "mldnaeeb";
+      const response = await fetch(`https://formspree.io/f/${formspreeId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

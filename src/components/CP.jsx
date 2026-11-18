@@ -120,7 +120,7 @@ function CompetitiveProgrammingComponent() {
       name: "CodeChef",
       logo: "/assets/logos/codechef.svg",
       handle: "dhiraj-wasu",
-      profileUrl: "https://www.codechef.com",
+      profileUrl: "https://www.codechef.com/users/dhiraj-wasu",
       stats: [
         { label: "Category", value: "Competitive Practice" },
         { label: "Focus", value: "Contests & DSA" },
