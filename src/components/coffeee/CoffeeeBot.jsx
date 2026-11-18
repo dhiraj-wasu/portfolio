@@ -34,7 +34,7 @@ const poseClass = {
   relaxing: "pose-relaxing",
 };
 
-export default function CoffeeeBot({ state = "idle", compact = false, onClick }) {
+export default function CoffeeeBot({ state = "idle", compact = false, className = "", onClick }) {
   const reaction = reactions[state] || reactions.idle;
   const spriteUrl = `${import.meta.env.BASE_URL}assets/coffeee/coffeee-sprite.webp`;
   return (
@@ -43,7 +43,7 @@ export default function CoffeeeBot({ state = "idle", compact = false, onClick })
       onClick={onClick}
       disabled={!onClick}
       aria-label={onClick ? "Coffeee Bot — open the portfolio assistant" : `Coffeee Bot — ${reaction.label}`}
-      className={`coffeee-bot ${compact ? "coffeee-bot--compact" : ""}`}
+      className={`coffeee-bot ${compact ? "coffeee-bot--compact" : ""} ${className}`}
       whileHover={onClick ? { y: -5, scale: 1.025 } : undefined}
       whileTap={onClick ? { scale: 0.97 } : undefined}
     >

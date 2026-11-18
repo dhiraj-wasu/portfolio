@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   ArrowUp, ChevronDown, Code2, Coffee, ExternalLink,
   FolderCode, GraduationCap, Mail, MessageSquare, Moon, Plus,
@@ -123,6 +124,15 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
     "Tell me about his education",
   ];
 
+  useEffect(() => {
+    if (botState === "idle" && messages.length > 0) {
+      const timer = window.setTimeout(() => {
+        setBotState("relaxing");
+      }, 14000);
+      return () => window.clearTimeout(timer);
+    }
+  }, [botState, messages.length]);
+
   const submitQuestion = (value = question) => {
     const clean = value.trim();
     if (!clean) return;
@@ -139,9 +149,14 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
       window.setTimeout(() => {
         setMessages((current) => [...current, { id: crypto.randomUUID(), role: "assistant", answer }]);
         setBotState("explaining");
-        window.setTimeout(() => setBotState("completed"), 720);
-      }, 380);
-    }, 220);
+        window.setTimeout(() => {
+          setBotState("completed");
+          window.setTimeout(() => {
+            setBotState("idle");
+          }, 3200);
+        }, 1500);
+      }, 700);
+    }, 500);
   };
 
   const newConversation = () => {
@@ -226,7 +241,7 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
           <form className="coffeee-composer" onSubmit={(event) => { event.preventDefault(); submitQuestion(); }}>
             <textarea
               value={question}
-              onChange={(event) => { setQuestion(event.target.value); setBotState(event.target.value ? "curious" : "idle"); }}
+              onChange={(event) => { setQuestion(event.target.value); setBotState(event.target.value.trim() ? "curious" : "idle"); }}
               onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); submitQuestion(); } }}
               placeholder="Message Coffeee..."
               rows={1}
@@ -236,6 +251,29 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
           </form>
           <p className="coffeee-disclaimer">Coffeee uses curated information from this portfolio. It isn't a live AI assistant.</p>
         </footer>
+
+        {messages.length > 0 && (
+          <motion.div
+            className="coffeee-floating-companion"
+            drag
+            dragMomentum={false}
+            initial={{ opacity: 0, scale: 0.8, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            title="Drag Coffeee anywhere!"
+          >
+            <CoffeeeBot
+              state={botState}
+              className="coffeee-bot--floating"
+              onClick={() => {
+                const nextStates = ["greeting", "curious", "relaxing", "completed", "idle"];
+                const next = nextStates[(nextStates.indexOf(botState) + 1) % nextStates.length];
+                setBotState(next);
+              }}
+            />
+          </motion.div>
+        )}
       </main>
     </div>
   );
