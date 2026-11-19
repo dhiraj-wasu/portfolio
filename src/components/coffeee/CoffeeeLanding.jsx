@@ -136,7 +136,8 @@ export default function CoffeeeLanding({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.08 }}
           >
-            Hey, explorer! I'm Brewbit <span className="coffeee-hero-coffee-emoji" role="img" aria-label="coffee">☕︎</span>
+            Hey, explorer! <br className="coffeee-mobile-break" />
+            <span className="coffeee-hero-nowrap">I'm Brewbit <span className="coffeee-hero-coffee-emoji" role="img" aria-label="coffee">☕︎</span></span>
           </motion.h1>
 
           <div className="coffeee-hero-kicker">
