@@ -222,6 +222,30 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
           </form>
           <p className="coffeee-disclaimer">Brewbit uses curated information from this portfolio. It isn't a live AI assistant.</p>
         </footer>
+
+        {messages.length > 0 && (
+          <motion.div
+            className="coffeee-floating-companion"
+            drag
+            dragMomentum={false}
+            initial={{ opacity: 0, scale: 0.8, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            title="Drag Brewbit anywhere!"
+          >
+            <CoffeeeBot
+              state={botState}
+              tagline={botTagline}
+              className="coffeee-bot--floating"
+              onClick={() => {
+                const nextStates = ["greeting", "curious", "relaxing", "completed", "idle"];
+                const next = nextStates[(nextStates.indexOf(botState) + 1) % nextStates.length];
+                setBotState(next);
+              }}
+            />
+          </motion.div>
+        )}
       </main>
     </div>
   );

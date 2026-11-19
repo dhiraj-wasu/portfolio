@@ -223,8 +223,8 @@
    ========================================================================== */
 .brewbit-guide-root {
   position: fixed;
-  right: 28px;
-  bottom: 28px;
+  right: 24px;
+  bottom: 20px;
   z-index: 99;
   pointer-events: none;
   font-family: "Figtree", sans-serif;
@@ -249,20 +249,6 @@
 /* ==========================================================================
    Brewbit Floating Companion: Lightweight, conversational & non-modal
    ========================================================================== */
-
-/* Root anchor in bottom-right corner */
-.brewbit-guide-root {
-  position: fixed;
-  right: 24px;
-  bottom: 20px;
-  z-index: 99;
-  pointer-events: none;
-  font-family: "Figtree", sans-serif;
-  color: var(--c-text);
-}
-.brewbit-guide-root * {
-  box-sizing: border-box;
-}
 
 /* Floating Companion Container: Transparent, no outer box, no large border */
 .brewbit-companion {
@@ -912,6 +898,7 @@
   place-items: center;
   overflow: hidden;
   flex: none;
+  pointer-events: none;
 }
 .brewbit-floating-avatar .coffeee-bot__sprite {
   width: 34px !important;
@@ -926,6 +913,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  pointer-events: none;
 }
 .brewbit-status-dot {
   width: 7px;

@@ -29,8 +29,19 @@ export default function BrewbitGuide({ theme = "light" }) {
   const [activeResponse, setActiveResponse] = useState(null);
   const inputRef = useRef(null);
 
-  // First-visit 5-second delay
+  // First-visit 5-second delay (supports ?guide=true and ?reset=true for testing)
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("reset") === "true") {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+    if (params.get("guide") === "true") {
+      setGuideState("companion");
+      setBotPose("greeting");
+      setBotTagline(BREWBIT_TAGLINES.welcome);
+      return;
+    }
+
     const seen = localStorage.getItem(STORAGE_KEY);
     if (seen === "true") return;
 
@@ -46,7 +57,7 @@ export default function BrewbitGuide({ theme = "light" }) {
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [location.search]);
 
   // Dismiss handler
   const handleDismiss = useCallback(() => {

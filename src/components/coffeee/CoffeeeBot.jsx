@@ -58,16 +58,8 @@ export default function CoffeeeBot({
   const currentTagline = tagline || defaultTaglineByState[state] || BREWBIT_TAGLINES.initial;
   const spriteUrl = `${import.meta.env.BASE_URL}assets/coffeee/coffeee-sprite.webp`;
 
-  return (
-    <motion.button
-      type="button"
-      onClick={onClick}
-      disabled={!onClick}
-      aria-label={onClick ? "Brewbit — open the portfolio assistant" : `Brewbit — ${reaction.label}`}
-      className={`coffeee-bot ${compact ? "coffeee-bot--compact" : ""} ${className}`}
-      whileHover={onClick && !shouldReduceMotion ? { y: -5, scale: 1.025 } : undefined}
-      whileTap={onClick && !shouldReduceMotion ? { scale: 0.97 } : undefined}
-    >
+  const content = (
+    <>
       <AnimatePresence mode="wait">
         {!compact && (
           <motion.span
@@ -102,6 +94,31 @@ export default function CoffeeeBot({
           <Sparkles size={12} />
         </span>
       )}
-    </motion.button>
+    </>
+  );
+
+  if (onClick) {
+    return (
+      <motion.button
+        type="button"
+        onClick={onClick}
+        aria-label="Brewbit — open the portfolio assistant"
+        className={`coffeee-bot ${compact ? "coffeee-bot--compact" : ""} ${className}`}
+        whileHover={!shouldReduceMotion ? { y: -5, scale: 1.025 } : undefined}
+        whileTap={!shouldReduceMotion ? { scale: 0.97 } : undefined}
+      >
+        {content}
+      </motion.button>
+    );
+  }
+
+  return (
+    <motion.div
+      role="img"
+      aria-label={`Brewbit — ${reaction.label}`}
+      className={`coffeee-bot ${compact ? "coffeee-bot--compact" : ""} ${className}`}
+    >
+      {content}
+    </motion.div>
   );
 }
