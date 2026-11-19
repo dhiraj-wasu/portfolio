@@ -57,6 +57,7 @@ const Header = memo(({ toggleTheme, currentTheme, onHamburgerClick }) => {
             <Link
               key={link.to}
               to={link.to}
+              data-tour={link.to === '/about' ? 'about' : link.to === '/projects' ? 'projects' : link.to === '/academics' ? 'experience' : undefined}
               className={`px-3 py-1.5 rounded-md text-base font-medium transition-colors duration-150
                 ${isActive
                   ? "text-primary bg-primary/10 dark:bg-primary/20"

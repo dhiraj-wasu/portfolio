@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUp, ArrowUpRight, Code2, Coffee, FolderCode,
-  Github, Linkedin, MessageSquare, Moon, Sun, UserRound
+  Github, Linkedin, MessageSquare, Moon, Sun, UserRound,
+  Menu, X
 } from "lucide-react";
 import CoffeeeBot from "./CoffeeeBot";
 import { BREWBIT_TAGLINES } from "./brewbitTaglines";
@@ -33,6 +34,7 @@ export default function CoffeeeLanding({
 }) {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   // Transition to idle tagline after 12s of inactivity
   useEffect(() => {
@@ -77,13 +79,14 @@ export default function CoffeeeLanding({
           dhiraj.wasu<span>.</span><small>PORTFOLIO V2.0</small>
         </button>
         <nav className="coffeee-landing-nav" aria-label="Main navigation">
-          <button onClick={() => navigate("/about")}>About</button>
-          <button onClick={() => navigate("/projects")}>Projects</button>
-          <button onClick={() => navigate("/academics")}>Experience</button>
+          <button onClick={() => navigate("/about")} data-tour="about">About</button>
+          <button onClick={() => navigate("/projects")} data-tour="projects">Projects</button>
+          <button onClick={() => navigate("/academics")} data-tour="experience">Experience</button>
         </nav>
         <div className="coffeee-landing-actions">
           <a
             className="coffeee-resume-link"
+            data-tour="resume"
             href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume"
           >
             Request resume <ArrowUpRight size={14} />
@@ -113,8 +116,40 @@ export default function CoffeeeLanding({
           >
             {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
           </button>
+          <button
+            type="button"
+            className="coffeee-mobile-nav-toggle"
+            data-tour="mobile-nav"
+            onClick={() => setMobileNavOpen((open) => !open)}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileNavOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
         </div>
       </header>
+
+      {/* Collapsible Mobile Navigation Bar */}
+      <AnimatePresence>
+        {mobileNavOpen && (
+          <motion.div
+            className="coffeee-mobile-nav-menu"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.18 }}
+          >
+            <button onClick={() => { setMobileNavOpen(false); navigate("/about"); }} data-tour="about">
+              About
+            </button>
+            <button onClick={() => { setMobileNavOpen(false); navigate("/projects"); }} data-tour="projects">
+              Projects
+            </button>
+            <button onClick={() => { setMobileNavOpen(false); navigate("/academics"); }} data-tour="experience">
+              Experience
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="coffeee-landing-main">
         <section className="coffeee-hero">
@@ -156,6 +191,7 @@ export default function CoffeeeLanding({
             }}
           >
             <textarea
+              data-tour="chat-input"
               value={question}
               onChange={handleInputChange}
               onKeyDown={(e) => {
@@ -195,13 +231,13 @@ export default function CoffeeeLanding({
           </div>
         </section>
 
-        <section className="coffeee-selected-work" id="selected-work">
+        <section className="coffeee-selected-work" id="selected-work" data-tour="selected-work">
           <div className="coffeee-section-heading">
             <div>
               <span>SELECTED WORK</span>
               <h3>A few things I’ve been building.</h3>
             </div>
-            <button onClick={() => navigate("/projects")}>
+            <button onClick={() => navigate("/projects")} data-tour="all-projects-btn">
               All projects <ArrowUpRight size={15} />
             </button>
           </div>
@@ -210,6 +246,7 @@ export default function CoffeeeLanding({
             {work.map((p, i) => (
               <a
                 className="coffeee-featured-card"
+                data-tour={i === 0 ? "project-card" : undefined}
                 href={p.url}
                 target="_blank"
                 rel="noreferrer"

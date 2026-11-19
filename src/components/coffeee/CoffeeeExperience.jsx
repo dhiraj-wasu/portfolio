@@ -202,6 +202,7 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
         <footer className="coffeee-composer-wrap">
           <form className="coffeee-composer" onSubmit={(event) => { event.preventDefault(); submitQuestion(); }}>
             <textarea
+              data-tour="chat-input"
               value={question}
               onChange={(event) => {
                 setQuestion(event.target.value);

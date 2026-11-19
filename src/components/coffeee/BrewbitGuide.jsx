@@ -7,6 +7,7 @@ import {
   Sparkles, Coffee, Send
 } from "lucide-react";
 import CoffeeeBot from "./CoffeeeBot";
+import BrewbitTour from "./BrewbitTour";
 import { skillsByDomain, resolveAnswer } from "./coffeeeData";
 import { BREWBIT_TAGLINES } from "./brewbitTaglines";
 
@@ -29,11 +30,15 @@ export default function BrewbitGuide({ theme = "light" }) {
   const [activeResponse, setActiveResponse] = useState(null);
   const inputRef = useRef(null);
 
-  // First-visit 5-second delay (supports ?guide=true and ?reset=true for testing)
+  // First-visit 5-second delay (supports ?guide=true, ?tour=true and ?reset=true for testing)
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("reset") === "true") {
       localStorage.removeItem(STORAGE_KEY);
+    }
+    if (params.get("tour") === "true") {
+      setGuideState("tour");
+      return;
     }
     if (params.get("guide") === "true") {
       setGuideState("companion");
@@ -136,21 +141,11 @@ export default function BrewbitGuide({ theme = "light" }) {
   const handleSelectSuggestion = useCallback(
     (actionId) => {
       if (actionId === "tour") {
-        setBotPose("explaining");
-        setBotTagline(BREWBIT_TAGLINES.welcome);
-        setActiveResponse({
-          type: "tour",
-          title: "A Quick Tour of Dhiraj's Portfolio",
-          body: "Dhiraj Wasu is a Computer Science Engineering student at SGGSIE&T, Nanded, specializing in backend systems, distributed architectures, and AI. Here is what you can discover:",
-          sections: [
-            { label: "About", path: "/about", note: "Background, mindset, and what drives his engineering work." },
-            { label: "Projects", path: "/projects", note: "Production-grade RAG, distributed queues, in-memory caches, and cybersecurity." },
-            { label: "Skills", path: "/skills", note: "Languages (C++, Python, Java, SQL) and backend infrastructure." },
-            { label: "Experience", path: "/academics", note: "Education timeline and academic credentials." },
-            { label: "Contact", path: "/contact", note: "Email, GitHub, LinkedIn, and resume request options." },
-          ],
-        });
-        setGuideState("response");
+        if (currentPath !== "/") {
+          navigate("/");
+        }
+        setGuideState("tour");
+        return;
       } else if (actionId === "projects") {
         setBotPose("explaining");
         setBotTagline(BREWBIT_TAGLINES.exploringProjects);
@@ -584,6 +579,27 @@ export default function BrewbitGuide({ theme = "light" }) {
               </div>
             </button>
           </motion.div>
+        )}
+
+        {/* STATE: INTERACTIVE WEBSITE WALKTHROUGH TOUR */}
+        {guideState === "tour" && (
+          <BrewbitTour
+            isOpen={guideState === "tour"}
+            onClose={() => {
+              setGuideState("floating");
+              setBotPose("idle");
+              setBotTagline(BREWBIT_TAGLINES.returnToIdle);
+            }}
+            onComplete={() => {
+              setGuideState("floating");
+              setBotPose("completed");
+              setBotTagline(BREWBIT_TAGLINES.answered);
+            }}
+            onAskQuestion={() => {
+              setGuideState("floating");
+            }}
+            theme={theme}
+          />
         )}
       </AnimatePresence>
     </div>
