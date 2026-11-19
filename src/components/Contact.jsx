@@ -99,7 +99,7 @@ function ContactComponent() {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to send message");
       }
-    } catch (error) {
+    } catch {
       setFormState({
         status: "error",
         message: "An error occurred. Please try again or email me directly.",
