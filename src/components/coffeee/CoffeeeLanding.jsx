@@ -131,20 +131,20 @@ export default function CoffeeeLanding({
             />
           </motion.div>
 
-          <div className="coffeee-hero-kicker">
-            YOUR LITTLE GUIDE TO EXPLORING THIS PORTFOLIO
-          </div>
-
           <motion.h1
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.08 }}
           >
-            I'm Brewbit <span className="coffeee-hero-coffee-emoji" role="img" aria-label="coffee">☕︎</span>
+            Hey, explorer! I'm Brewbit <span className="coffeee-hero-coffee-emoji" role="img" aria-label="coffee">☕︎</span>
           </motion.h1>
 
+          <div className="coffeee-hero-kicker">
+            YOUR LITTLE GUIDE TO EXPLORING THIS PORTFOLIO
+          </div>
+
           <p className="coffeee-hero-copy">
-            Your little guide to exploring this portfolio. I can tell you about Dhiraj's engineering journey, projects, skills and everything he's building.
+            Curious about something? I can take you through his projects, skills, experience, and everything he's building. Pick a suggestion or ask me anything!
           </p>
 
           <form
