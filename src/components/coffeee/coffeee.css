@@ -217,3 +217,762 @@
 .coffeee-bot--floating .coffeee-bot__status{background:var(--c-panel);border:1px solid var(--c-line);border-radius:999px;padding:3px 10px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-top:2px}
 @media(max-width:900px){.coffeee-floating-companion{right:20px;bottom:88px}.coffeee-bot--floating .coffeee-bot__sprite{width:96px;height:128px}.coffeee-bot--floating .coffeee-bot__bubble{font-size:10px;padding:6px 11px}}
 @media(max-width:600px){.coffeee-floating-companion{right:12px;bottom:80px}.coffeee-bot--floating .coffeee-bot__sprite{width:82px;height:110px}}
+
+
+/* ==========================================================================
+   Brewbit Guide: First-visit pop-in, interactive guide & persistent floating widget
+   ========================================================================== */
+.brewbit-guide-root {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 99;
+  pointer-events: none;
+  font-family: "Figtree", sans-serif;
+  color: var(--c-text);
+}
+.brewbit-guide-root * {
+  box-sizing: border-box;
+}
+
+/* Theme variables if used outside .coffeee-app */
+.brewbit-guide-root.theme-light {
+  --c-bg: #faf9f5; --c-sidebar: #f3f1eb; --c-panel: #fffefa; --c-panel-2: #f1eee7;
+  --c-text: #24231f; --c-muted: #77746d; --c-line: #e6e2d9; --c-accent: #9b7658;
+  --c-accent-soft: #eee5da; --c-shadow: 0 14px 40px rgba(35,29,22,.12);
+}
+.brewbit-guide-root.theme-dark {
+  --c-bg: #191918; --c-sidebar: #151514; --c-panel: #222220; --c-panel-2: #2b2a27;
+  --c-text: #f2f0ea; --c-muted: #aaa69d; --c-line: #393833; --c-accent: #c39a75;
+  --c-accent-soft: #3a3028; --c-shadow: 0 14px 40px rgba(0,0,0,.35);
+}
+
+/* 5-second initial pop-in bubble container */
+.brewbit-bubble-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  pointer-events: auto;
+}
+.brewbit-speech-bubble {
+  width: 290px;
+  max-width: calc(100vw - 40px);
+  padding: 14px 16px;
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+  border-radius: 18px 18px 4px 18px;
+  box-shadow: var(--c-shadow);
+  cursor: pointer;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.brewbit-speech-bubble:hover {
+  border-color: var(--c-accent);
+  box-shadow: 0 16px 44px rgba(0,0,0,.16);
+  transform: translateY(-2px);
+}
+.brewbit-bubble-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.brewbit-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--c-accent);
+  background: var(--c-accent-soft);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+.brewbit-close-mini {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--c-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.brewbit-close-mini:hover {
+  background: var(--c-panel-2);
+  color: var(--c-text);
+}
+.brewbit-bubble-message h3 {
+  margin: 0 0 3px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-text);
+  line-height: 1.35;
+}
+.brewbit-bubble-message p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--c-muted);
+  line-height: 1.45;
+}
+.brewbit-bubble-cta {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--c-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brewbit-bubble-cta span {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--c-muted);
+}
+.brewbit-btn-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 11px;
+  background: var(--c-accent);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.brewbit-btn-explore:hover {
+  opacity: .92;
+}
+.brewbit-mascot-anchor {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 12px;
+}
+.brewbit-mascot--interactive .coffeee-bot__sprite {
+  width: 108px;
+  height: 144px;
+  filter: drop-shadow(0 10px 20px rgba(35,20,12,.24));
+}
+.brewbit-mascot--interactive .coffeee-bot__bubble,
+.brewbit-mascot--interactive .coffeee-bot__status {
+  display: none !important;
+}
+
+/* Expanded Suggestions & Response Cards */
+.brewbit-expanded-card {
+  width: 390px;
+  max-width: calc(100vw - 32px);
+  max-height: min(84vh, 610px);
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+  border-radius: 20px;
+  box-shadow: 0 18px 48px rgba(0,0,0,.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+  backdrop-filter: blur(10px);
+}
+.brewbit-card-header {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--c-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--c-panel);
+  gap: 12px;
+  flex: none;
+}
+.brewbit-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.brewbit-header-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--c-accent-soft);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: none;
+}
+.brewbit-header-avatar .coffeee-bot__sprite {
+  width: 40px !important;
+  height: 53px !important;
+  filter: none !important;
+}
+.brewbit-header-avatar .coffeee-bot__bubble,
+.brewbit-header-avatar .coffeee-bot__status {
+  display: none !important;
+}
+.brewbit-header-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--c-accent);
+  text-transform: uppercase;
+}
+.brewbit-card-title {
+  margin: 1px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-text);
+  line-height: 1.25;
+}
+.brewbit-card-subtitle {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: var(--c-muted);
+  line-height: 1.35;
+}
+.brewbit-close-btn {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--c-muted);
+  cursor: pointer;
+  flex: none;
+  transition: background .15s, color .15s;
+}
+.brewbit-close-btn:hover {
+  background: var(--c-panel-2);
+  color: var(--c-text);
+}
+.brewbit-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 9px;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  background: var(--c-panel-2);
+  color: var(--c-text);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.brewbit-back-btn:hover {
+  border-color: var(--c-accent);
+}
+
+/* Card Body */
+.brewbit-card-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-line) transparent;
+}
+.brewbit-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--c-muted);
+  text-transform: uppercase;
+  margin-bottom: 9px;
+}
+.brewbit-suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.brewbit-suggestion-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--c-line);
+  border-radius: 11px;
+  background: var(--c-panel-2);
+  color: var(--c-text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .18s, background .18s, transform .18s;
+}
+.brewbit-suggestion-button:hover {
+  border-color: var(--c-accent);
+  background: var(--c-panel);
+  transform: translateX(2px);
+}
+.brewbit-suggestion-icon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+  flex: none;
+}
+.brewbit-suggestion-label {
+  flex: 1;
+  line-height: 1.35;
+}
+.brewbit-suggestion-arrow {
+  color: var(--c-muted);
+  transition: transform .18s;
+}
+.brewbit-suggestion-button:hover .brewbit-suggestion-arrow {
+  color: var(--c-accent);
+  transform: translateX(2px);
+}
+
+/* Free-form composer */
+.brewbit-composer-section {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--c-line);
+}
+.brewbit-composer-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-muted);
+  margin-bottom: 7px;
+}
+.brewbit-composer-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--c-line);
+  border-radius: 11px;
+  padding: 4px 5px 4px 11px;
+  background: var(--c-panel-2);
+  transition: border-color .18s;
+}
+.brewbit-composer-form:focus-within {
+  border-color: var(--c-accent);
+  background: var(--c-panel);
+}
+.brewbit-composer-form input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--c-text);
+  font: inherit;
+  font-size: 12px;
+  outline: 0;
+}
+.brewbit-composer-form input::placeholder {
+  color: var(--c-muted);
+}
+.brewbit-submit-btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--c-accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.brewbit-submit-btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+.brewbit-submit-btn:not(:disabled):hover {
+  opacity: .92;
+}
+
+/* Card Footer */
+.brewbit-card-footer {
+  padding: 9px 16px;
+  border-top: 1px solid var(--c-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--c-panel-2);
+  flex: none;
+}
+.brewbit-signature {
+  font-size: 10px;
+  font-style: italic;
+  color: var(--c-muted);
+}
+.brewbit-dismiss-btn {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--c-muted);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color .15s, background .15s;
+}
+.brewbit-dismiss-btn:hover {
+  color: var(--c-text);
+  background: var(--c-panel);
+}
+.brewbit-btn-secondary {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-accent);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.brewbit-btn-secondary:hover {
+  text-decoration: underline;
+}
+
+/* Active Response Details */
+.brewbit-response-body {
+  padding: 16px;
+}
+.brewbit-response-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--c-accent);
+  margin-bottom: 6px;
+}
+.brewbit-response-title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--c-text);
+}
+.brewbit-response-text {
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: var(--c-muted);
+  line-height: 1.65;
+}
+
+/* Tour grid */
+.brewbit-tour-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+.brewbit-tour-item {
+  display: flex;
+  flex-direction: column;
+  padding: 9px 12px;
+  border: 1px solid var(--c-line);
+  border-radius: 9px;
+  background: var(--c-panel-2);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.brewbit-tour-item:hover {
+  border-color: var(--c-accent);
+  background: var(--c-panel);
+}
+.brewbit-tour-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-text);
+}
+.brewbit-tour-item small {
+  margin-top: 3px;
+  font-size: 10px;
+  color: var(--c-muted);
+  line-height: 1.4;
+}
+
+/* Project Categories */
+.brewbit-categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.brewbit-category-item {
+  padding: 9px 11px;
+  border: 1px solid var(--c-line);
+  border-radius: 9px;
+  background: var(--c-panel-2);
+}
+.brewbit-category-item strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-accent);
+  margin-bottom: 2px;
+}
+.brewbit-category-item p {
+  margin: 0;
+  font-size: 11px;
+  color: var(--c-text);
+  line-height: 1.45;
+}
+
+/* Skills Groups */
+.brewbit-skills-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.brewbit-skills-group {
+  padding: 8px 10px;
+  border: 1px solid var(--c-line);
+  border-radius: 9px;
+  background: var(--c-panel-2);
+}
+.brewbit-skills-group h4 {
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--c-accent);
+  text-transform: uppercase;
+  letter-spacing: .7px;
+}
+.brewbit-skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.brewbit-skills-tags span {
+  padding: 3px 7px;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  font-size: 9px;
+  color: var(--c-text);
+  background: var(--c-panel);
+}
+
+/* Timeline */
+.brewbit-timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+  position: relative;
+  padding-left: 14px;
+  border-left: 2px solid var(--c-line);
+}
+.brewbit-timeline-item {
+  position: relative;
+}
+.brewbit-timeline-dot {
+  position: absolute;
+  left: -19px;
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-accent);
+}
+.brewbit-timeline-item strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-text);
+}
+.brewbit-timeline-inst {
+  font-size: 10px;
+  color: var(--c-accent);
+  margin: 1px 0 3px;
+}
+.brewbit-timeline-item p {
+  margin: 0;
+  font-size: 10px;
+  color: var(--c-muted);
+  line-height: 1.45;
+}
+
+/* Tips */
+.brewbit-tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+.brewbit-tip-item {
+  padding: 8px 11px;
+  border: 1px solid var(--c-line);
+  border-radius: 9px;
+  background: var(--c-panel-2);
+}
+.brewbit-tip-item strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-accent);
+  margin-bottom: 2px;
+}
+.brewbit-tip-item p {
+  margin: 0;
+  font-size: 10px;
+  color: var(--c-text);
+  line-height: 1.45;
+}
+
+/* Facts chips */
+.brewbit-facts-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 10px 0;
+}
+.brewbit-facts-chips span {
+  padding: 4px 8px;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  font-size: 10px;
+  color: var(--c-muted);
+  background: var(--c-panel-2);
+}
+
+.brewbit-action-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 7px 11px;
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  background: var(--c-panel-2);
+  color: var(--c-text);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.brewbit-action-chip:hover {
+  border-color: var(--c-accent);
+  background: var(--c-panel);
+}
+
+/* Persistent Floating Mascot Widget (State 5) */
+.brewbit-floating-widget {
+  pointer-events: auto;
+}
+.brewbit-floating-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 13px 5px 6px;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  background: var(--c-panel);
+  color: var(--c-text);
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+  cursor: pointer;
+  transition: transform .18s, border-color .18s, box-shadow .18s;
+  user-select: none;
+}
+.brewbit-floating-button:hover {
+  transform: translateY(-2px);
+  border-color: var(--c-accent);
+  box-shadow: 0 14px 36px rgba(0,0,0,.22);
+}
+.brewbit-floating-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--c-accent-soft);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: none;
+}
+.brewbit-floating-avatar .coffeee-bot__sprite {
+  width: 36px !important;
+  height: 48px !important;
+  filter: none !important;
+}
+.brewbit-floating-avatar .coffeee-bot__bubble,
+.brewbit-floating-avatar .coffeee-bot__status {
+  display: none !important;
+}
+.brewbit-floating-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.brewbit-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #64a66a;
+  box-shadow: 0 0 0 2px rgba(100,166,106,.25);
+  animation: coffeee-pulse 2.2s infinite;
+}
+.brewbit-floating-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -.2px;
+}
+
+/* Responsive adjustments */
+@media(max-width: 640px) {
+  .brewbit-guide-root {
+    right: 14px;
+    bottom: 84px; /* Above bottom mobile bar and composers */
+    left: 14px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .brewbit-speech-bubble {
+    width: min(calc(100vw - 28px), 320px);
+    padding: 12px 14px;
+  }
+  .brewbit-expanded-card {
+    width: 100%;
+    max-width: calc(100vw - 28px);
+    max-height: min(78vh, 520px);
+  }
+  .brewbit-card-header {
+    padding: 11px 13px;
+  }
+  .brewbit-card-body {
+    padding: 12px 13px;
+  }
+  .brewbit-suggestion-button {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+}
+
+/* Reduced motion preference */
+@media(prefers-reduced-motion: reduce) {
+  .brewbit-guide-root *,
+  .brewbit-guide-root *::before,
+  .brewbit-guide-root *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .brewbit-status-dot {
+    animation: none !important;
+  }
+}

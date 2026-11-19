@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const reactions = {
   idle: { label: "Just hanging out", message: "Need a hand exploring?" },
-  greeting: { label: "Hello there", message: "Hey! Welcome in." },
+  greeting: { label: "Hello there", message: "A little caffeine, a lot of code." },
   curious: { label: "Curious", message: "Ooh, what are we looking at?" },
   thinking: { label: "Thinking", message: "Let me think that through…" },
   working: { label: "Working", message: "On it. Brewing an answer…" },
@@ -42,7 +42,7 @@ export default function CoffeeeBot({ state = "idle", compact = false, className 
       type="button"
       onClick={onClick}
       disabled={!onClick}
-      aria-label={onClick ? "Coffeee Bot — open the portfolio assistant" : `Coffeee Bot — ${reaction.label}`}
+      aria-label={onClick ? "Brewbit — open the portfolio assistant" : `Brewbit — ${reaction.label}`}
       className={`coffeee-bot ${compact ? "coffeee-bot--compact" : ""} ${className}`}
       whileHover={onClick ? { y: -5, scale: 1.025 } : undefined}
       whileTap={onClick ? { scale: 0.97 } : undefined}
@@ -65,7 +65,7 @@ export default function CoffeeeBot({ state = "idle", compact = false, className 
         key={state}
         className={`coffeee-bot__sprite ${poseClass[state] || poseClass.idle}`}
         role="img"
-        aria-label="Coffeee Bot mascot"
+        aria-label="Brewbit mascot"
         style={{ backgroundImage: `url("${spriteUrl}")` }}
         animate={motionByState[state] || motionByState.idle}
         transition={{

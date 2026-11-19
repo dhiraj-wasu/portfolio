@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import CoffeeeExperience from "./components/coffeee/CoffeeeExperience";
+import BrewbitGuide from "./components/coffeee/BrewbitGuide";
 
 import About from "./components/About";
 import Skills from "./components/Skills";
@@ -102,6 +103,7 @@ function App() {
         <Route path="/" element={<CoffeeeExperience theme={theme} toggleTheme={toggleTheme} />} />
         <Route path="/*" element={<LegacyPortfolio theme={theme} toggleTheme={toggleTheme} sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} />} />
       </Routes>
+      <BrewbitGuide theme={theme} />
       <Analytics />
     </Router>
   );

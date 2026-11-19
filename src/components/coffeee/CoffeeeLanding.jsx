@@ -36,13 +36,12 @@ export default function CoffeeeLanding({theme,toggleTheme,question,setQuestion,s
         <motion.div className="coffeee-hero-mascot" initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{duration:.55}}>
           <CoffeeeBot state={question.trim() ? "curious" : "greeting"} onClick={()=>submitQuestion("Who is Dhiraj?")}/>
         </motion.div>
-        <div className="coffeee-hero-kicker">YOUR PERSONAL PORTFOLIO ASSISTANT</div>
-        <motion.h1 initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:.08}}>Hey, I’m Coffeee!</motion.h1>
-        <motion.h2 initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:.14}}>Let’s explore Dhiraj’s world.</motion.h2>
-        <p className="coffeee-hero-copy">I can tell you about his engineering journey, projects, skills and everything he’s building.</p>
+        <div className="coffeee-hero-kicker">YOUR LITTLE GUIDE TO EXPLORING THIS PORTFOLIO</div>
+        <motion.h1 initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:.08}}>I’m Brewbit.</motion.h1>
+        <p className="coffeee-hero-copy">Your little guide to exploring this portfolio. I can tell you about Dhiraj’s engineering journey, projects, skills and everything he’s building.</p>
         <form className="coffeee-landing-composer" onSubmit={e=>{e.preventDefault();submitQuestion();}}>
-          <textarea value={question} onChange={e=>setQuestion(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submitQuestion();}}} placeholder="Ask anything about Dhiraj..." rows={2} aria-label="Ask Coffeee about Dhiraj"/>
-          <div className="coffeee-landing-composer-bottom"><span className="coffeee-composer-hint"><Coffee size={15}/> Coffeee is ready to help you explore</span><button type="submit" disabled={!question.trim()} aria-label="Send question"><ArrowUp size={18}/></button></div>
+          <textarea value={question} onChange={e=>setQuestion(e.target.value)} onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submitQuestion();}}} placeholder="Ask anything about Dhiraj..." rows={2} aria-label="Ask Brewbit about Dhiraj"/>
+          <div className="coffeee-landing-composer-bottom"><span className="coffeee-composer-hint"><Coffee size={15}/> Brewbit is ready to help you explore</span><button type="submit" disabled={!question.trim()} aria-label="Send question"><ArrowUp size={18}/></button></div>
         </form>
         <div className="coffeee-try-asking"><span>TRY ASKING</span><div>{questions.map(({label,prompt,icon:Icon})=><button key={label} onClick={()=>submitQuestion(prompt)}><Icon size={14}/>{label}</button>)}</div></div>
       </section>
