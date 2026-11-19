@@ -9,6 +9,7 @@ import {
 import CoffeeeLanding from "./CoffeeeLanding";
 import CoffeeeBot from "./CoffeeeBot";
 import { projects, answers, resolveAnswer } from "./coffeeeData";
+import { BREWBIT_TAGLINES } from "./brewbitTaglines";
 import "./coffeee.css";
 
 const navigation = [
@@ -53,6 +54,7 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
   const [history, setHistory] = useState([]);
   const [activeTopic, setActiveTopic] = useState("A new conversation");
   const [botState, setBotState] = useState("idle");
+  const [botTagline, setBotTagline] = useState(BREWBIT_TAGLINES.initial);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [view, setView] = useState("landing");
 
@@ -67,6 +69,7 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
     if (botState === "idle" && messages.length > 0) {
       const timer = window.setTimeout(() => {
         setBotState("relaxing");
+        setBotTagline(BREWBIT_TAGLINES.returnToIdle);
       }, 14000);
       return () => window.clearTimeout(timer);
     }
@@ -82,17 +85,36 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
     setActiveTopic(topic);
     setHistory((current) => current.includes(topic) ? current : [topic, ...current].slice(0, 8));
     setMessages((current) => [...current, { id: crypto.randomUUID(), role: "user", text: clean }]);
+
+    // Contextual tagline based on question topic
+    const qLower = clean.toLowerCase();
+    let answerTagline = BREWBIT_TAGLINES.answered;
+    if (qLower.includes("project") || qLower.includes("built") || qLower.includes("work")) {
+      answerTagline = BREWBIT_TAGLINES.exploringProjects;
+    } else if (qLower.includes("education") || qLower.includes("experience") || qLower.includes("journey") || qLower.includes("timeline")) {
+      answerTagline = BREWBIT_TAGLINES.exploringExperience;
+    } else if (qLower.includes("skill") || qLower.includes("stack") || qLower.includes("tech") || qLower.includes("tools")) {
+      answerTagline = BREWBIT_TAGLINES.exploringSkills;
+    }
+
+    setBotTagline(BREWBIT_TAGLINES.submitting);
     setBotState("thinking");
+
     window.setTimeout(() => {
+      setBotTagline(BREWBIT_TAGLINES.processing);
       setBotState("working");
+
       window.setTimeout(() => {
         setMessages((current) => [...current, { id: crypto.randomUUID(), role: "assistant", answer }]);
+        setBotTagline(answerTagline);
         setBotState("explaining");
+
         window.setTimeout(() => {
           setBotState("completed");
           window.setTimeout(() => {
+            setBotTagline(BREWBIT_TAGLINES.returnToIdle);
             setBotState("idle");
-          }, 3200);
+          }, 3600);
         }, 1500);
       }, 700);
     }, 500);
@@ -103,7 +125,8 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
     setQuestion("");
     setView("landing");
     setActiveTopic("A new conversation");
-    setBotState("idle");
+    setBotState("greeting");
+    setBotTagline(BREWBIT_TAGLINES.initial);
     setSidebarOpen(false);
   };
 
@@ -157,7 +180,7 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
         <section className={`coffeee-thread ${messages.length ? "has-messages" : "is-empty"}`}>
           {messages.length === 0 ? (
             <div className="coffeee-empty-state">
-              <div className="coffeee-empty-bot"><CoffeeeBot state={botState} onClick={() => submitQuestion("Who is Dhiraj?")} /></div>
+              <div className="coffeee-empty-bot"><CoffeeeBot state={botState} tagline={botTagline} onClick={() => submitQuestion("Who is Dhiraj?")} /></div>
               <div className="coffeee-eyebrow"><span /> YOUR PERSONAL PORTFOLIO GUIDE</div>
               <h1>What would you like<br />to know about <em>Dhiraj?</em></h1>
               <p>Explore the work, ideas and engineering journey behind the portfolio.</p>
@@ -180,7 +203,16 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
           <form className="coffeee-composer" onSubmit={(event) => { event.preventDefault(); submitQuestion(); }}>
             <textarea
               value={question}
-              onChange={(event) => { setQuestion(event.target.value); setBotState(event.target.value.trim() ? "curious" : "idle"); }}
+              onChange={(event) => {
+                setQuestion(event.target.value);
+                if (event.target.value.trim()) {
+                  setBotState("curious");
+                  setBotTagline(BREWBIT_TAGLINES.typing);
+                } else {
+                  setBotState("idle");
+                  setBotTagline(BREWBIT_TAGLINES.returnToIdle);
+                }
+              }}
               onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); submitQuestion(); } }}
               placeholder="Message Brewbit..."
               rows={1}

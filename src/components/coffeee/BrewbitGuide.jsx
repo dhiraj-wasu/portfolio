@@ -3,11 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   Compass, FolderCode, Code2, GraduationCap, HelpCircle,
-  X, ArrowRight, ArrowUp, ChevronLeft, ExternalLink,
+  X, ArrowRight, ChevronLeft, ExternalLink,
   Sparkles, Coffee, Send
 } from "lucide-react";
 import CoffeeeBot from "./CoffeeeBot";
-import { projects, skillsByDomain, answers, resolveAnswer } from "./coffeeeData";
+import { skillsByDomain, resolveAnswer } from "./coffeeeData";
+import { BREWBIT_TAGLINES } from "./brewbitTaglines";
 
 const STORAGE_KEY = "brewbit_welcome_seen";
 
@@ -16,13 +17,14 @@ export default function BrewbitGuide({ theme = "light" }) {
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
 
-  // Mode: "hidden" | "bubble" | "expanded" | "response" | "floating"
+  // Mode: "hidden" | "companion" | "response" | "floating"
   const [guideState, setGuideState] = useState(() => {
     const seen = localStorage.getItem(STORAGE_KEY);
     return seen === "true" ? "floating" : "hidden";
   });
 
   const [botPose, setBotPose] = useState("greeting");
+  const [botTagline, setBotTagline] = useState(BREWBIT_TAGLINES.initial);
   const [customQuestion, setCustomQuestion] = useState("");
   const [activeResponse, setActiveResponse] = useState(null);
   const inputRef = useRef(null);
@@ -36,7 +38,8 @@ export default function BrewbitGuide({ theme = "light" }) {
       setGuideState((current) => {
         if (current === "hidden") {
           setBotPose("greeting");
-          return "bubble";
+          setBotTagline(BREWBIT_TAGLINES.welcome);
+          return "companion";
         }
         return current;
       });
@@ -51,13 +54,15 @@ export default function BrewbitGuide({ theme = "light" }) {
     setGuideState("floating");
     setActiveResponse(null);
     setBotPose("idle");
+    setBotTagline(BREWBIT_TAGLINES.returnToIdle);
   }, []);
 
-  // Open guide from floating or bubble
-  const handleOpenExpanded = useCallback(() => {
-    setGuideState("expanded");
+  // Open companion from floating button
+  const handleOpenCompanion = useCallback(() => {
+    setGuideState("companion");
     setActiveResponse(null);
     setBotPose("curious");
+    setBotTagline(BREWBIT_TAGLINES.welcome);
     setTimeout(() => {
       inputRef.current?.focus();
     }, 200);
@@ -66,8 +71,9 @@ export default function BrewbitGuide({ theme = "light" }) {
   // Return to suggestion list
   const handleBackToSuggestions = useCallback(() => {
     setActiveResponse(null);
-    setGuideState("expanded");
+    setGuideState("companion");
     setBotPose("curious");
+    setBotTagline(BREWBIT_TAGLINES.welcome);
   }, []);
 
   // Contextual suggestions based on route
@@ -91,7 +97,7 @@ export default function BrewbitGuide({ theme = "light" }) {
       },
       {
         id: "skills",
-        label: "See his skills and tech stack",
+        label: "Discover his skills and tech stack",
         icon: Code2,
         action: "skills",
         visible: currentPath !== "/skills",
@@ -120,6 +126,7 @@ export default function BrewbitGuide({ theme = "light" }) {
     (actionId) => {
       if (actionId === "tour") {
         setBotPose("explaining");
+        setBotTagline(BREWBIT_TAGLINES.welcome);
         setActiveResponse({
           type: "tour",
           title: "A Quick Tour of Dhiraj's Portfolio",
@@ -135,6 +142,7 @@ export default function BrewbitGuide({ theme = "light" }) {
         setGuideState("response");
       } else if (actionId === "projects") {
         setBotPose("explaining");
+        setBotTagline(BREWBIT_TAGLINES.exploringProjects);
         if (currentPath !== "/projects") {
           navigate("/projects");
         }
@@ -164,6 +172,7 @@ export default function BrewbitGuide({ theme = "light" }) {
         setGuideState("response");
       } else if (actionId === "skills") {
         setBotPose("explaining");
+        setBotTagline(BREWBIT_TAGLINES.exploringSkills);
         if (currentPath !== "/skills") {
           navigate("/skills");
         }
@@ -176,6 +185,7 @@ export default function BrewbitGuide({ theme = "light" }) {
         setGuideState("response");
       } else if (actionId === "experience") {
         setBotPose("completed");
+        setBotTagline(BREWBIT_TAGLINES.exploringExperience);
         if (currentPath !== "/academics") {
           navigate("/academics");
         }
@@ -199,6 +209,7 @@ export default function BrewbitGuide({ theme = "light" }) {
         setGuideState("response");
       } else if (actionId === "how-to") {
         setBotPose("explaining");
+        setBotTagline(BREWBIT_TAGLINES.welcome);
         setActiveResponse({
           type: "how-to",
           title: "How to Use This Portfolio",
@@ -240,10 +251,12 @@ export default function BrewbitGuide({ theme = "light" }) {
       if (!clean) return;
 
       setBotPose("thinking");
+      setBotTagline(BREWBIT_TAGLINES.submitting);
       setGuideState("response");
 
       setTimeout(() => {
         setBotPose("working");
+        setBotTagline(BREWBIT_TAGLINES.processing);
         setTimeout(() => {
           const ans = resolveAnswer(clean);
           setActiveResponse({
@@ -257,6 +270,7 @@ export default function BrewbitGuide({ theme = "light" }) {
             questionText: clean,
           });
           setBotPose("explaining");
+          setBotTagline(BREWBIT_TAGLINES.answered);
           setCustomQuestion("");
         }, 350);
       }, 300);
@@ -272,194 +286,138 @@ export default function BrewbitGuide({ theme = "light" }) {
   // Animation settings
   const transitionConfig = shouldReduceMotion
     ? { duration: 0 }
-    : { type: "spring", damping: 26, stiffness: 280 };
+    : { type: "spring", damping: 25, stiffness: 260 };
 
   return (
     <div className={`brewbit-guide-root theme-${theme}`}>
       <AnimatePresence mode="wait">
-        {/* STATE 2: POPUP BUBBLE (5-second first visit pop-in) */}
-        {guideState === "bubble" && (
+        {/* STATE: FLOATING COMPANION (No outer solid card, integrated into page background) */}
+        {guideState === "companion" && (
           <motion.div
-            key="brewbit-bubble-card"
-            className="brewbit-bubble-container"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 35, scale: 0.92 }}
+            key="brewbit-floating-companion-view"
+            className="brewbit-companion"
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 25, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.95 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 15, scale: 0.96 }}
             transition={transitionConfig}
           >
-            {/* Speech bubble */}
-            <div className="brewbit-speech-bubble" onClick={handleOpenExpanded}>
-              <div className="brewbit-bubble-header">
-                <span className="brewbit-badge">
-                  <Sparkles size={11} /> BREWBIT
-                </span>
+            {/* A. Brewbit Introduction with Mascot */}
+            <div className="brewbit-companion-intro">
+              <div className="brewbit-companion-mascot">
+                <CoffeeeBot state={botPose} compact />
+              </div>
+              <div className="brewbit-companion-speech">
+                <div className="brewbit-companion-speech-top">
+                  <span className="brewbit-companion-label">
+                    <Sparkles size={11} /> BREWBIT
+                  </span>
+                  <button
+                    type="button"
+                    className="brewbit-companion-close"
+                    onClick={handleDismiss}
+                    aria-label="Dismiss guide"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+                <h3 className="brewbit-companion-heading">Hey! Need a hand exploring?</h3>
+                <p className="brewbit-companion-desc">
+                  I'm Brewbit. I can help you find your way around Dhiraj's portfolio. What would you like to explore?
+                </p>
+              </div>
+            </div>
+
+            {/* B. Suggested Actions as Lightweight Conversational Chips */}
+            <div className="brewbit-companion-actions" role="group" aria-label="Suggested navigation actions">
+              {suggestions.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className="brewbit-companion-chip"
+                    onClick={() => handleSelectSuggestion(item.action)}
+                  >
+                    <span className="brewbit-companion-chip-icon">
+                      <Icon size={14} />
+                    </span>
+                    <span className="brewbit-companion-chip-label">{item.label}</span>
+                    <ArrowRight size={13} className="brewbit-companion-chip-arrow" />
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* C. Free-Text Question & Dismiss */}
+            <div className="brewbit-companion-input-block">
+              <div className="brewbit-companion-input-header">
+                <span>Or just ask me anything.</span>
                 <button
                   type="button"
-                  className="brewbit-close-mini"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDismiss();
-                  }}
-                  aria-label="Dismiss guide"
+                  className="brewbit-companion-dismiss-text"
+                  onClick={handleDismiss}
                 >
-                  <X size={14} />
+                  Dismiss
                 </button>
               </div>
-
-              <div className="brewbit-bubble-message">
-                <h3>Hey! Need a hand exploring?</h3>
-                <p>I'm Brewbit. I can show you around!</p>
-              </div>
-
-              <div className="brewbit-bubble-cta">
-                <span>Where would you like to go?</span>
-                <button type="button" className="brewbit-btn-explore" onClick={handleOpenExpanded}>
-                  Explore options <ArrowRight size={13} />
+              <form className="brewbit-companion-input-form" onSubmit={handleSubmitCustomQuestion}>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={customQuestion}
+                  onChange={(e) => setCustomQuestion(e.target.value)}
+                  placeholder="Ask about projects, skills, experience..."
+                  aria-label="Ask Brewbit a question"
+                />
+                <button
+                  type="submit"
+                  disabled={!customQuestion.trim()}
+                  aria-label="Send question"
+                  className="brewbit-companion-send-btn"
+                >
+                  <Send size={13} />
                 </button>
-              </div>
-            </div>
-
-            {/* Mascot Button */}
-            <div className="brewbit-mascot-anchor">
-              <CoffeeeBot
-                state={botPose}
-                className="brewbit-mascot--interactive"
-                onClick={handleOpenExpanded}
-              />
+              </form>
             </div>
           </motion.div>
         )}
 
-        {/* STATE 3: EXPANDED SUGGESTIONS CARD */}
-        {guideState === "expanded" && (
-          <motion.div
-            key="brewbit-expanded-card"
-            className="brewbit-expanded-card"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 25, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 15, scale: 0.96 }}
-            transition={transitionConfig}
-          >
-            {/* Card Header */}
-            <div className="brewbit-card-header">
-              <div className="brewbit-card-header-left">
-                <div className="brewbit-header-avatar">
-                  <CoffeeeBot state={botPose} compact />
-                </div>
-                <div>
-                  <div className="brewbit-header-kicker">
-                    <Sparkles size={11} /> YOUR LITTLE GUIDE
-                  </div>
-                  <h3 className="brewbit-card-title">Hey! Need a hand exploring?</h3>
-                  <p className="brewbit-card-subtitle">I'm Brewbit. I can show you around!</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                className="brewbit-close-btn"
-                onClick={handleDismiss}
-                aria-label="Close guide"
-              >
-                <X size={17} />
-              </button>
-            </div>
-
-            {/* Suggestions List */}
-            <div className="brewbit-card-body">
-              <div className="brewbit-section-title">Where would you like to go?</div>
-              <div className="brewbit-suggestions-list">
-                {suggestions.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      className="brewbit-suggestion-button"
-                      onClick={() => handleSelectSuggestion(item.action)}
-                    >
-                      <span className="brewbit-suggestion-icon">
-                        <Icon size={16} />
-                      </span>
-                      <span className="brewbit-suggestion-label">{item.label}</span>
-                      <ArrowRight size={14} className="brewbit-suggestion-arrow" />
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Free-form question composer */}
-              <div className="brewbit-composer-section">
-                <label className="brewbit-composer-label" htmlFor="brewbit-input">
-                  Or just type your own question. I'm all ears!
-                </label>
-                <form className="brewbit-composer-form" onSubmit={handleSubmitCustomQuestion}>
-                  <input
-                    id="brewbit-input"
-                    ref={inputRef}
-                    type="text"
-                    value={customQuestion}
-                    onChange={(e) => setCustomQuestion(e.target.value)}
-                    placeholder="Ask about projects, stack, experience..."
-                    aria-label="Ask Brewbit a question"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!customQuestion.trim()}
-                    aria-label="Submit question"
-                    className="brewbit-submit-btn"
-                  >
-                    <Send size={14} />
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            {/* Card Footer */}
-            <div className="brewbit-card-footer">
-              <span className="brewbit-signature">"A little caffeine, a lot of code."</span>
-              <button type="button" className="brewbit-dismiss-btn" onClick={handleDismiss}>
-                Dismiss
-              </button>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STATE 4: ACTIVE RESPONSE DISPLAY */}
+        {/* STATE: ACTIVE RESPONSE DISPLAY (Lightweight conversational response) */}
         {guideState === "response" && activeResponse && (
           <motion.div
-            key="brewbit-response-card"
-            className="brewbit-expanded-card brewbit-response-card"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 25, scale: 0.96 }}
+            key="brewbit-floating-response-view"
+            className="brewbit-companion brewbit-companion--response"
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 15, scale: 0.96 }}
             transition={transitionConfig}
           >
-            {/* Header with back button */}
-            <div className="brewbit-card-header">
+            {/* Top Bar with Back and Close */}
+            <div className="brewbit-companion-response-top">
               <button
                 type="button"
-                className="brewbit-back-btn"
+                className="brewbit-companion-back-btn"
                 onClick={handleBackToSuggestions}
                 aria-label="Back to suggestions"
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft size={15} />
                 <span>Back</span>
               </button>
-              <div className="brewbit-header-avatar">
+              <div className="brewbit-companion-response-avatar">
                 <CoffeeeBot state={botPose} compact />
               </div>
               <button
                 type="button"
-                className="brewbit-close-btn"
+                className="brewbit-companion-close"
                 onClick={handleDismiss}
-                aria-label="Close guide"
+                aria-label="Dismiss guide"
               >
-                <X size={17} />
+                <X size={14} />
               </button>
             </div>
 
-            {/* Response Content */}
-            <div className="brewbit-card-body brewbit-response-body">
+            {/* Response Content Balloon */}
+            <div className="brewbit-companion-response-balloon">
               <div className="brewbit-response-tag">
                 <Coffee size={13} /> BREWBIT’S ANSWER
               </div>
@@ -474,9 +432,7 @@ export default function BrewbitGuide({ theme = "light" }) {
                       key={sec.label}
                       type="button"
                       className="brewbit-tour-item"
-                      onClick={() => {
-                        navigate(sec.path);
-                      }}
+                      onClick={() => navigate(sec.path)}
                     >
                       <div className="brewbit-tour-item-head">
                         <strong>{sec.label}</strong>
@@ -570,25 +526,29 @@ export default function BrewbitGuide({ theme = "light" }) {
                   {activeResponse.link.label} <ArrowRight size={13} />
                 </button>
               )}
-            </div>
 
-            {/* Response Footer */}
-            <div className="brewbit-card-footer">
-              <button
-                type="button"
-                className="brewbit-btn-secondary"
-                onClick={handleBackToSuggestions}
-              >
-                ← Back to options
-              </button>
-              <button type="button" className="brewbit-dismiss-btn" onClick={handleDismiss}>
-                Dismiss
-              </button>
+              {/* Response Footer */}
+              <div className="brewbit-companion-response-foot">
+                <button
+                  type="button"
+                  className="brewbit-companion-back-link"
+                  onClick={handleBackToSuggestions}
+                >
+                  ← Back to suggestions
+                </button>
+                <button
+                  type="button"
+                  className="brewbit-companion-dismiss-text"
+                  onClick={handleDismiss}
+                >
+                  Dismiss
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
 
-        {/* STATE 5: SMALL FLOATING MASCOT STATE */}
+        {/* STATE: SMALL FLOATING MASCOT BUTTON (Persistent after dismissal) */}
         {guideState === "floating" && (
           <motion.div
             key="brewbit-floating-widget"
@@ -601,7 +561,7 @@ export default function BrewbitGuide({ theme = "light" }) {
             <button
               type="button"
               className="brewbit-floating-button"
-              onClick={handleOpenExpanded}
+              onClick={handleOpenCompanion}
               aria-label="Ask Brewbit — open portfolio guide"
             >
               <div className="brewbit-floating-avatar">

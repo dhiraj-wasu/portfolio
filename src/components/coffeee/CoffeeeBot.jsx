@@ -1,15 +1,27 @@
 import { Sparkles } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { BREWBIT_TAGLINES } from "./brewbitTaglines";
+
+const defaultTaglineByState = {
+  idle: BREWBIT_TAGLINES.idle,
+  greeting: BREWBIT_TAGLINES.initial,
+  curious: BREWBIT_TAGLINES.typing,
+  thinking: BREWBIT_TAGLINES.submitting,
+  working: BREWBIT_TAGLINES.processing,
+  explaining: BREWBIT_TAGLINES.answered,
+  completed: BREWBIT_TAGLINES.answered,
+  relaxing: BREWBIT_TAGLINES.returnToIdle,
+};
 
 const reactions = {
-  idle: { label: "Just hanging out", message: "Need a hand exploring?" },
-  greeting: { label: "Hello there", message: "A little caffeine, a lot of code." },
-  curious: { label: "Curious", message: "Ooh, what are we looking at?" },
-  thinking: { label: "Thinking", message: "Let me think that through…" },
-  working: { label: "Working", message: "On it. Brewing an answer…" },
-  explaining: { label: "Explaining", message: "Here's what I found." },
-  completed: { label: "Ready", message: "Freshly brewed." },
-  relaxing: { label: "Coffee break", message: "Take your time. I'll be here." },
+  idle: { label: "Just hanging out" },
+  greeting: { label: "Hello there" },
+  curious: { label: "Curious" },
+  thinking: { label: "Thinking" },
+  working: { label: "Working" },
+  explaining: { label: "Explaining" },
+  completed: { label: "Ready" },
+  relaxing: { label: "Coffee break" },
 };
 
 const motionByState = {
@@ -34,9 +46,18 @@ const poseClass = {
   relaxing: "pose-relaxing",
 };
 
-export default function CoffeeeBot({ state = "idle", compact = false, className = "", onClick }) {
+export default function CoffeeeBot({
+  state = "idle",
+  compact = false,
+  className = "",
+  onClick,
+  tagline,
+}) {
+  const shouldReduceMotion = useReducedMotion();
   const reaction = reactions[state] || reactions.idle;
+  const currentTagline = tagline || defaultTaglineByState[state] || BREWBIT_TAGLINES.initial;
   const spriteUrl = `${import.meta.env.BASE_URL}assets/coffeee/coffeee-sprite.webp`;
+
   return (
     <motion.button
       type="button"
@@ -44,20 +65,20 @@ export default function CoffeeeBot({ state = "idle", compact = false, className 
       disabled={!onClick}
       aria-label={onClick ? "Brewbit — open the portfolio assistant" : `Brewbit — ${reaction.label}`}
       className={`coffeee-bot ${compact ? "coffeee-bot--compact" : ""} ${className}`}
-      whileHover={onClick ? { y: -5, scale: 1.025 } : undefined}
-      whileTap={onClick ? { scale: 0.97 } : undefined}
+      whileHover={onClick && !shouldReduceMotion ? { y: -5, scale: 1.025 } : undefined}
+      whileTap={onClick && !shouldReduceMotion ? { scale: 0.97 } : undefined}
     >
       <AnimatePresence mode="wait">
         {!compact && (
           <motion.span
-            key={state}
+            key={currentTagline}
             className="coffeee-bot__bubble"
-            initial={{ opacity: 0, y: 8, scale: 0.94 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 5, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -5, scale: 0.96 }}
-            transition={{ duration: 0.2 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -4, scale: 0.96 }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
           >
-            {reaction.message}
+            {currentTagline}
           </motion.span>
         )}
       </AnimatePresence>
@@ -67,7 +88,7 @@ export default function CoffeeeBot({ state = "idle", compact = false, className 
         role="img"
         aria-label="Brewbit mascot"
         style={{ backgroundImage: `url("${spriteUrl}")` }}
-        animate={motionByState[state] || motionByState.idle}
+        animate={shouldReduceMotion ? undefined : motionByState[state] || motionByState.idle}
         transition={{
           duration: state === "completed" ? 0.58 : state === "working" ? 0.72 : 2.8,
           repeat: state === "completed" ? 0 : Infinity,
