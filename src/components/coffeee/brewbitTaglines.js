@@ -3,8 +3,8 @@
  * Short, witty, context-aware taglines that reflect Brewbit's personality.
  */
 export const BREWBIT_TAGLINES = {
-  initial: "Hey there, curious human!",
-  welcome: "Your next discovery starts here.",
+  initial: "Welcome!",
+  welcome: "Welcome!",
   idle: "Brewing up something interesting...",
   typing: "Ooh, that's an interesting question!",
   submitting: "Let me dig into that.",
