@@ -6,6 +6,7 @@ import {
   Menu, X
 } from "lucide-react";
 import CoffeeeBot from "./CoffeeeBot";
+import DynamicNavigation from "../navigation/DynamicNavigation";
 import { BREWBIT_TAGLINES } from "./brewbitTaglines";
 
 const questions = [
@@ -74,82 +75,11 @@ export default function CoffeeeLanding({
 
   return (
     <div className={`coffeee-app coffeee-landing theme-${theme}`}>
-      <header className="coffeee-landing-header">
-        <button className="coffeee-landing-brand" onClick={newConversation}>
-          dhiraj.wasu<span>.</span><small>PORTFOLIO V2.0</small>
-        </button>
-        <nav className="coffeee-landing-nav" aria-label="Main navigation">
-          <button onClick={() => navigate("/about")} data-tour="about">About</button>
-          <button onClick={() => navigate("/projects")} data-tour="projects">Projects</button>
-          <button onClick={() => navigate("/academics")} data-tour="experience">Experience</button>
-        </nav>
-        <div className="coffeee-landing-actions">
-          <a
-            className="coffeee-resume-link"
-            data-tour="resume"
-            href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume"
-          >
-            Request resume <ArrowUpRight size={14} />
-          </a>
-          <a
-            className="coffeee-social-link"
-            href="https://github.com/dhiraj-wasu"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
-          >
-            <Github size={17} />
-          </a>
-          <a
-            className="coffeee-social-link"
-            href="https://www.linkedin.com/in/dhiraj-wasu/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="LinkedIn"
-          >
-            <Linkedin size={17} />
-          </a>
-          <button
-            className="coffeee-theme-toggle"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
-          </button>
-          <button
-            type="button"
-            className="coffeee-mobile-nav-toggle"
-            data-tour="mobile-nav"
-            onClick={() => setMobileNavOpen((open) => !open)}
-            aria-label="Toggle mobile menu"
-          >
-            {mobileNavOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-        </div>
-      </header>
-
-      {/* Collapsible Mobile Navigation Bar */}
-      <AnimatePresence>
-        {mobileNavOpen && (
-          <motion.div
-            className="coffeee-mobile-nav-menu"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.18 }}
-          >
-            <button onClick={() => { setMobileNavOpen(false); navigate("/about"); }} data-tour="about">
-              About
-            </button>
-            <button onClick={() => { setMobileNavOpen(false); navigate("/projects"); }} data-tour="projects">
-              Projects
-            </button>
-            <button onClick={() => { setMobileNavOpen(false); navigate("/academics"); }} data-tour="experience">
-              Experience
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <DynamicNavigation
+        theme={theme}
+        toggleTheme={toggleTheme}
+        newConversation={newConversation}
+      />
 
       <main className="coffeee-landing-main">
         <section className="coffeee-hero">

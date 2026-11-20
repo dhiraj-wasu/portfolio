@@ -1,4 +1,5 @@
 import React from 'react';
+import DynamicNavigation from "./navigation/DynamicNavigation";
 import Header from "./Header";
 import SideNav from "./SideNav";
 import Footer from "./Footer";
@@ -8,10 +9,10 @@ const Layout = ({ children, theme, toggleTheme, sideNavOpen, setSideNavOpen }) =
   return (
     <div className="relative min-h-screen flex flex-col text-foreground overflow-x-hidden">
       <StaticBackground theme={theme} />
-      <Header
+      <DynamicNavigation
+        theme={theme}
         toggleTheme={toggleTheme}
-        currentTheme={theme}
-        onHamburgerClick={() => setSideNavOpen(true)}
+        isLegacyLayout
       />
       <SideNav open={sideNavOpen} onClose={() => setSideNavOpen(false)} />
       

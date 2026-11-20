@@ -7,6 +7,9 @@ import Layout from "./components/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import CoffeeeExperience from "./components/coffeee/CoffeeeExperience";
 import BrewbitGuide from "./components/coffeee/BrewbitGuide";
+import { NavigationLabProvider } from "./components/navigation/NavigationLabContext";
+import NavigationLabWidget from "./components/navigation/NavigationLabWidget";
+import "./components/navigation/navigation-lab.css";
 
 import About from "./components/About";
 import Skills from "./components/Skills";
@@ -98,13 +101,16 @@ function App() {
 
   return (
     <Router>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<CoffeeeExperience theme={theme} toggleTheme={toggleTheme} />} />
-        <Route path="/*" element={<LegacyPortfolio theme={theme} toggleTheme={toggleTheme} sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} />} />
-      </Routes>
-      <BrewbitGuide theme={theme} />
-      <Analytics />
+      <NavigationLabProvider>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<CoffeeeExperience theme={theme} toggleTheme={toggleTheme} />} />
+          <Route path="/*" element={<LegacyPortfolio theme={theme} toggleTheme={toggleTheme} sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} />} />
+        </Routes>
+        <BrewbitGuide theme={theme} />
+        <NavigationLabWidget theme={theme} />
+        <Analytics />
+      </NavigationLabProvider>
     </Router>
   );
 }
