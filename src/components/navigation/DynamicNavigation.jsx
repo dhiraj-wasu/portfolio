@@ -16,21 +16,33 @@ export default function DynamicNavigation({
 }) {
   const { activeNav } = useNavigationLab();
 
-  switch (activeNav) {
-    case "command-bar":
-      return <NavCommandBar theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
-    case "dock":
-      return <NavFloatingDock theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
-    case "explore":
-      return <NavExploreDropdown theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
-    case "editorial":
-      return <NavEditorial theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
-    case "os-style":
-      return <NavOSStyle theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
-    case "brewbit-context":
-      return <NavBrewbitContextual theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
-    case "baseline":
-    default:
-      return <NavBaseline theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
+  const renderNav = () => {
+    switch (activeNav) {
+      case "command-bar":
+        return <NavCommandBar theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
+      case "dock":
+        return <NavFloatingDock theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
+      case "explore":
+        return <NavExploreDropdown theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
+      case "editorial":
+        return <NavEditorial theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
+      case "os-style":
+        return <NavOSStyle theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
+      case "brewbit-context":
+        return <NavBrewbitContextual theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
+      case "baseline":
+      default:
+        return <NavBaseline theme={theme} toggleTheme={toggleTheme} newConversation={newConversation} />;
+    }
+  };
+
+  if (isLegacyLayout) {
+    return (
+      <div className="sticky top-0 z-40 w-full backdrop-blur-md bg-background/85 border-b border-border/30 transition-colors">
+        {renderNav()}
+      </div>
+    );
   }
+
+  return renderNav();
 }

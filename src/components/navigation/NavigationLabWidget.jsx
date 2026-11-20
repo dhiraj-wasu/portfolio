@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   SlidersHorizontal, X, Check, Sparkles, ExternalLink,
   Award, Eye, BarChart2, BookOpen, Layers, ShieldCheck,
-  ChevronRight, RefreshCw, Compass
+  ChevronRight, ChevronLeft, RefreshCw, Compass
 } from "lucide-react";
 import { useNavigationLab } from "./useNavigationLab";
 import {
@@ -13,32 +13,90 @@ import {
 } from "./NavigationComparisonData";
 
 export default function NavigationLabWidget({ theme }) {
-  const { activeNav, setActiveNav, isLabOpen, setIsLabOpen } = useNavigationLab();
+  const { activeNav, setActiveNav, cycleNav, isLabOpen, setIsLabOpen } = useNavigationLab();
   const [activeTab, setActiveTab] = useState("switcher"); // "switcher" | "matrix" | "recommendation"
 
   const currentVar = NAVIGATION_VARIATIONS.find((v) => v.id === activeNav) || NAVIGATION_VARIATIONS[0];
 
   return (
     <>
-      {/* Floating Lab Toggle Button (Bottom-Left) */}
-      <motion.button
-        type="button"
-        className="nav-lab-launcher-btn"
-        onClick={() => setIsLabOpen((open) => !open)}
+      {/* Floating Interactive Navigation Switcher Toolbar */}
+      <motion.div
+        className="nav-lab-floating-bar"
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        title="Open Navigation Design Lab"
+        transition={{ duration: 0.3 }}
       >
-        <span className="nav-lab-launcher-icon">
-          <SlidersHorizontal size={14} />
-        </span>
-        <span className="nav-lab-launcher-text">
-          <strong>Nav Lab</strong> · {currentVar.shortName}
-        </span>
-        <span className="nav-lab-launcher-badge">Opt {currentVar.numericId}</span>
-      </motion.button>
+        {/* Lab Launcher Trigger */}
+        <button
+          type="button"
+          className="nav-lab-launcher-btn"
+          onClick={() => setIsLabOpen((open) => !open)}
+          title="Open Navigation Design Lab & Comparison Matrix (Alt+N)"
+        >
+          <span className="nav-lab-launcher-icon">
+            <SlidersHorizontal size={13} />
+          </span>
+          <span className="nav-lab-launcher-text">
+            <strong>Nav Lab</strong>
+          </span>
+        </button>
+
+        {/* Quick Variation Switcher Strip */}
+        <div className="nav-lab-quick-switcher">
+          <button
+            type="button"
+            className="nav-lab-quick-nav-arrow"
+            onClick={() => cycleNav(-1)}
+            title="Previous variation (Alt + ←)"
+            aria-label="Previous variation"
+          >
+            <ChevronLeft size={13} />
+          </button>
+
+          <div className="nav-lab-quick-pills" role="tablist" aria-label="Navigation variations">
+            {NAVIGATION_VARIATIONS.map((v) => {
+              const isSelected = v.id === activeNav;
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isSelected}
+                  className={`nav-lab-quick-pill ${isSelected ? "is-active" : ""}`}
+                  onClick={() => setActiveNav(v.id)}
+                  title={`Option ${v.numericId}: ${v.name}`}
+                >
+                  <span className="nav-lab-quick-num">Opt {v.numericId}</span>
+                  <span className="nav-lab-quick-name">{v.shortName.split(" ")[0]}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            type="button"
+            className="nav-lab-quick-nav-arrow"
+            onClick={() => cycleNav(1)}
+            title="Next variation (Alt + →)"
+            aria-label="Next variation"
+          >
+            <ChevronRight size={13} />
+          </button>
+        </div>
+
+        {/* Current Active Indicator */}
+        <div
+          className="nav-lab-current-tag"
+          onClick={() => setIsLabOpen(true)}
+          title="Click to view full evaluation and scores"
+        >
+          <span className="nav-lab-current-dot" />
+          <span className="nav-lab-current-label">
+            Active: <strong>Opt {currentVar.numericId}</strong> ({currentVar.shortName})
+          </span>
+        </div>
+      </motion.div>
 
       {/* Navigation Design Lab Modal */}
       <AnimatePresence>
@@ -61,13 +119,38 @@ export default function NavigationLabWidget({ theme }) {
                   <h2>Explore & Compare 7 Navigation Concepts</h2>
                   <p>Preview each interactive navigation pattern live on this portfolio</p>
                 </div>
+                <div className="nav-lab-header-actions">
+                  <button
+                    type="button"
+                    className="nav-lab-view-live-btn"
+                    onClick={() => setIsLabOpen(false)}
+                    title="Close modal and view selected navigation live"
+                  >
+                    <Eye size={13} /> View Live on Site
+                  </button>
+                  <button
+                    type="button"
+                    className="nav-lab-close-btn"
+                    onClick={() => setIsLabOpen(false)}
+                    aria-label="Close Navigation Lab"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Active Indicator Banner */}
+              <div className="nav-lab-active-indicator-banner">
+                <span className="nav-lab-active-pill">CURRENT ACTIVE</span>
+                <span className="nav-lab-active-info">
+                  Option {currentVar.numericId}: <strong>{currentVar.name}</strong>
+                </span>
                 <button
                   type="button"
-                  className="nav-lab-close-btn"
+                  className="nav-lab-banner-close-btn"
                   onClick={() => setIsLabOpen(false)}
-                  aria-label="Close Navigation Lab"
                 >
-                  <X size={18} />
+                  Close & View Live ↗
                 </button>
               </div>
 
@@ -126,15 +209,19 @@ export default function NavigationLabWidget({ theme }) {
                               className={`nav-lab-select-btn ${isSelected ? "is-active" : ""}`}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setActiveNav(variation.id);
+                                if (isSelected) {
+                                  setIsLabOpen(false);
+                                } else {
+                                  setActiveNav(variation.id);
+                                }
                               }}
                             >
                               {isSelected ? (
                                 <>
-                                  <Check size={13} /> Active Navigation
+                                  <Check size={13} /> Active · Close to View Live ↗
                                 </>
                               ) : (
-                                <>Preview Variation →</>
+                                <>Switch to Option {variation.numericId} →</>
                               )}
                             </button>
                           </div>
@@ -157,6 +244,9 @@ export default function NavigationLabWidget({ theme }) {
                             <th
                               key={v.id}
                               className={`nav-lab-col-var ${v.id === activeNav ? "is-current" : ""}`}
+                              onClick={() => setActiveNav(v.id)}
+                              style={{ cursor: "pointer" }}
+                              title={`Click to activate Option ${v.numericId}`}
                             >
                               <div>Opt {v.numericId}</div>
                               <small>{v.shortName}</small>
@@ -178,6 +268,9 @@ export default function NavigationLabWidget({ theme }) {
                                 <td
                                   key={v.id}
                                   className={`nav-lab-score-cell ${v.id === activeNav ? "is-current" : ""} ${isHighest ? "is-best" : ""}`}
+                                  onClick={() => setActiveNav(v.id)}
+                                  style={{ cursor: "pointer" }}
+                                  title={`Click to activate Option ${v.numericId}`}
                                 >
                                   <span>{val.toFixed(1)}</span>
                                 </td>
@@ -197,6 +290,9 @@ export default function NavigationLabWidget({ theme }) {
                               <td
                                 key={v.id}
                                 className={`nav-lab-total-cell ${v.id === activeNav ? "is-current" : ""}`}
+                                onClick={() => setActiveNav(v.id)}
+                                style={{ cursor: "pointer" }}
+                                title={`Click to activate Option ${v.numericId}`}
                               >
                                 <strong>{total}</strong>
                                 <small>/ 10</small>
@@ -220,6 +316,16 @@ export default function NavigationLabWidget({ theme }) {
                       <p>
                         Best aligns with modern software/AI engineering signals (Linear, Raycast, Vercel). The <code>⌘K</code> palette provides extreme density and instant access to all projects, skills, resume, and Brewbit queries while keeping the header clean.
                       </p>
+                      <button
+                        type="button"
+                        className="nav-lab-report-apply-btn"
+                        onClick={() => {
+                          setActiveNav("command-bar");
+                          setIsLabOpen(false);
+                        }}
+                      >
+                        Activate Option 1 & View Live →
+                      </button>
                     </div>
 
                     <div className="nav-lab-report-card">
@@ -228,6 +334,16 @@ export default function NavigationLabWidget({ theme }) {
                       <p>
                         Zero friction for hiring managers: immediately puts Dhiraj's name and the "Request resume" button in focus, while neatly organizing all engineering domains inside a single structured dropdown.
                       </p>
+                      <button
+                        type="button"
+                        className="nav-lab-report-apply-btn"
+                        onClick={() => {
+                          setActiveNav("explore");
+                          setIsLabOpen(false);
+                        }}
+                      >
+                        Activate Option 3 & View Live →
+                      </button>
                     </div>
 
                     <div className="nav-lab-report-card">
@@ -236,6 +352,16 @@ export default function NavigationLabWidget({ theme }) {
                       <p>
                         Creates maximum synergy with the mascot. As visitors explore sections, Brewbit proactively suggests relevant deep-dives without feeling like an aggressive chatbot modal.
                       </p>
+                      <button
+                        type="button"
+                        className="nav-lab-report-apply-btn"
+                        onClick={() => {
+                          setActiveNav("brewbit-context");
+                          setIsLabOpen(false);
+                        }}
+                      >
+                        Activate Option 6 & View Live →
+                      </button>
                     </div>
 
                     <div className="nav-lab-report-card">
@@ -244,6 +370,16 @@ export default function NavigationLabWidget({ theme }) {
                       <p>
                         Bottom thumb ergonomics excel on smartphones. Placing Home, About, Projects, Experience, and Brewbit in a floating island gives effortless single-handed navigation.
                       </p>
+                      <button
+                        type="button"
+                        className="nav-lab-report-apply-btn"
+                        onClick={() => {
+                          setActiveNav("dock");
+                          setIsLabOpen(false);
+                        }}
+                      >
+                        Activate Option 2 & View Live →
+                      </button>
                     </div>
                   </div>
 

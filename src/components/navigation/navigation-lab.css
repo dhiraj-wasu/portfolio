@@ -708,9 +708,9 @@
 }
 
 /* --------------------------------------------------------------------------
-   Navigation Design Lab Floating Button & Comparison Modal
+   Navigation Design Lab Floating Switcher Toolbar & Comparison Modal
    -------------------------------------------------------------------------- */
-.nav-lab-launcher-btn {
+.nav-lab-floating-bar {
   position: fixed;
   bottom: 22px;
   left: 24px;
@@ -718,25 +718,47 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 13px 6px 9px;
+  padding: 5px 8px;
   border: 1px solid var(--c-line);
   border-radius: 999px;
-  background: rgba(255, 254, 250, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 254, 250, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: var(--c-text);
-  box-shadow: 0 10px 30px rgba(35, 29, 22, 0.15);
-  cursor: pointer;
+  box-shadow: 0 12px 36px rgba(35, 29, 22, 0.18);
   font-family: "Figtree", sans-serif;
   user-select: none;
+  max-width: calc(100vw - 48px);
+  overflow-x: auto;
 }
-.theme-dark .nav-lab-launcher-btn {
-  background: rgba(34, 34, 32, 0.95);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
+.theme-dark .nav-lab-floating-bar {
+  background: rgba(34, 34, 32, 0.94);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.42);
+}
+
+.nav-lab-launcher-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 6px;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  background: var(--c-panel-2);
+  color: var(--c-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  transition: all .16s ease;
+  flex: none;
+}
+.nav-lab-launcher-btn:hover {
+  border-color: var(--c-accent);
+  background: var(--c-panel);
+  transform: translateY(-1px);
 }
 .nav-lab-launcher-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--c-accent-soft);
   color: var(--c-accent);
@@ -746,14 +768,201 @@
 .nav-lab-launcher-text {
   font-size: 11px;
 }
-.nav-lab-launcher-badge {
-  font-size: 9px;
-  font-weight: 700;
-  padding: 2px 6px;
+
+/* Quick Variation Switcher Strip */
+.nav-lab-quick-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--c-panel-2);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  padding: 3px 4px;
+  flex: none;
+}
+.nav-lab-quick-nav-arrow {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  color: var(--c-muted);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all .14s ease;
+  padding: 0;
+}
+.nav-lab-quick-nav-arrow:hover {
+  background: var(--c-panel);
+  color: var(--c-text);
+}
+.nav-lab-quick-pills {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-lab-quick-pill {
+  border: 0;
+  background: transparent;
+  color: var(--c-muted);
+  padding: 3px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 600;
+  transition: all .14s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-lab-quick-pill:hover {
+  color: var(--c-text);
+  background: var(--c-panel);
+}
+.nav-lab-quick-pill.is-active {
+  background: var(--c-accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(180, 95, 30, 0.28);
+}
+.nav-lab-quick-num {
+  font-size: 10px;
+}
+.nav-lab-quick-name {
+  display: none;
+}
+@media (min-width: 900px) {
+  .nav-lab-quick-name {
+    display: inline;
+    font-size: 9.5px;
+    opacity: 0.85;
+  }
+}
+
+/* Current Tag */
+.nav-lab-current-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 10.5px;
+  color: var(--c-muted);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: color .14s;
+  flex: none;
+}
+.nav-lab-current-tag:hover {
+  color: var(--c-text);
+}
+.nav-lab-current-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+.nav-lab-current-label {
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .nav-lab-current-tag {
+    display: none;
+  }
+  .nav-lab-floating-bar {
+    bottom: 12px;
+    left: 12px;
+    padding: 4px 6px;
+  }
+}
+
+/* Modal Header Actions & Banner */
+.nav-lab-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-lab-view-live-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
   border-radius: 999px;
   background: var(--c-panel-2);
-  color: var(--c-accent);
   border: 1px solid var(--c-line);
+  color: var(--c-text);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.nav-lab-view-live-btn:hover {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+.nav-lab-active-indicator-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--c-panel-2);
+  border-bottom: 1px solid var(--c-line);
+  font-size: 11.5px;
+  color: var(--c-text);
+}
+.nav-lab-active-pill {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #10b981;
+  color: #fff;
+  flex: none;
+}
+.nav-lab-active-info {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nav-lab-banner-close-btn {
+  border: 0;
+  background: transparent;
+  color: var(--c-accent);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: 6px;
+  flex: none;
+}
+.nav-lab-banner-close-btn:hover {
+  background: var(--c-accent-soft);
+}
+.nav-lab-report-apply-btn {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--c-line);
+  background: var(--c-panel-2);
+  color: var(--c-text);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.nav-lab-report-apply-btn:hover {
+  background: var(--c-accent);
+  color: #fff;
+  border-color: var(--c-accent);
 }
 
 /* Design Lab Modal */
