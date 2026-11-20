@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Terminal, Compass, User, FolderCode, GraduationCap, Coffee,
-  ArrowUpRight, Moon, Sun, Menu, X
+  ArrowUpRight, Moon, Sun, Sparkles, Menu, X
 } from "lucide-react";
 import NavStyleSwitcher from "../NavStyleSwitcher";
 
@@ -55,120 +55,154 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
   };
 
   return (
-    <header className="os-menu-bar" role="banner" aria-label="Operating system navigation">
-      {/* Left: Minimal System Identity & Launcher Controls */}
-      <div className="os-nav-left">
-        <button
-          type="button"
-          className="os-brand-btn"
-          onClick={() => {
-            if (newConversation) newConversation();
-            else navigate("/");
-          }}
-          title="Home / Dhiraj OS"
-        >
-          <Terminal size={14} className="os-terminal-icon" />
-          <span className="os-brand-text">dhiraj.os</span>
-        </button>
-
-        <span className="os-nav-divider" aria-hidden="true" />
-
-        {/* Compact OS Launcher Navigation */}
-        <nav className="os-nav-launcher" aria-label="System sections">
-          {osNavItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = item.path ? location.pathname === item.path : false;
-
-            return (
-              <button
-                key={item.id}
-                type="button"
-                data-tour={item.tour}
-                className={`os-nav-item ${isActive ? "is-active" : ""}`}
-                onClick={() => handleItemClick(item)}
-                title={item.label}
-              >
-                <span className="os-nav-dot" aria-hidden="true" />
-                <Icon size={14} className="os-item-icon" />
-                <span className="os-item-label">{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-      </div>
-
-      {/* Right: Adjacent Style Switcher + Workstation System Tray */}
-      <div className="os-nav-right">
-        {/* Style Switcher styled cleanly to match OS aesthetic */}
-        <NavStyleSwitcher className="os-style-switcher" />
-
-        <span className="os-nav-divider" aria-hidden="true" />
-
-        {/* Brewbit Daemon Status */}
-        <button
-          type="button"
-          className="os-tray-btn os-tray-daemon"
-          onClick={handleBrewbitDaemonClick}
-          title="Brewbit Companion Daemon — Online & Ready"
-        >
-          <span className="os-daemon-indicator" />
-          <Coffee size={13} />
-          <span className="os-daemon-label">brewbitd</span>
-        </button>
-
-        {/* Quick CV Download/Request */}
-        <a
-          className="os-tray-btn os-tray-cv"
-          data-tour="resume"
-          href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume"
-          title="Request Dhiraj's Resume (PDF)"
-        >
-          <span>CV.pdf</span>
-          <ArrowUpRight size={11} />
-        </a>
-
-        {/* Theme Toggle */}
-        <button
-          type="button"
-          className="os-tray-btn os-tray-theme"
-          onClick={toggleTheme}
-          title={theme === "dark" ? "Toggle Light Mode" : "Toggle Dark Mode"}
-          aria-label="Toggle theme"
-        >
-          {theme === "dark" ? <Sun size={13} /> : <Moon size={13} />}
-        </button>
-
-        {/* Live System Clock */}
-        <div className="os-tray-clock" aria-label="Current system time">
-          <span>{currentTime || "12:00 PM"}</span>
+    <header className="os-header-wrapper" role="banner" aria-label="Operating system navigation">
+      <div className="os-nav-container">
+        {/* Left Island: Free-floating OS Terminal Host Pill */}
+        <div className="os-island-left">
+          <button
+            type="button"
+            className="os-brand-pill"
+            onClick={() => {
+              if (newConversation) newConversation();
+              else navigate("/");
+            }}
+            title="Dhiraj OS Workstation (v2.4)"
+            aria-label="Home / Dhiraj OS"
+          >
+            <span className="os-brand-prompt">
+              <Terminal size={20} className="os-terminal-icon" />
+              <span className="os-brand-name">dhiraj.os</span>
+            </span>
+            <span className="os-brand-badge" aria-hidden="true">
+              <span className="os-status-led" />
+              <span className="os-status-text">sys:ok</span>
+            </span>
+          </button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          className="os-mobile-toggle"
-          onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label="Toggle OS system menu"
-          aria-expanded={mobileOpen}
-        >
-          {mobileOpen ? <X size={16} /> : <Menu size={16} />}
-        </button>
+        {/* Center Island: Free-floating Main OS Launcher Dock (Truly Centered) */}
+        <div className="os-island-center">
+          <nav className="os-nav-dock" aria-label="System launcher navigation">
+            {osNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = item.path ? location.pathname === item.path : false;
+
+              return (
+                <motion.button
+                  key={item.id}
+                  type="button"
+                  data-tour={item.tour}
+                  className={`os-dock-item ${isActive ? "is-active" : ""} ${item.id === "brewbit" ? "os-dock-item--brewbit" : ""}`}
+                  onClick={() => handleItemClick(item)}
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  title={item.label}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="os-dock-active-bg"
+                      className="os-dock-active-bg"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    />
+                  )}
+                  <span className="os-dock-icon-wrap">
+                    <span className={`os-dock-dot ${isActive ? "is-active" : ""}`} aria-hidden="true" />
+                    <Icon size={20} className="os-dock-icon" />
+                    {item.id === "brewbit" && (
+                      <span className="os-dock-sparkle">
+                        <Sparkles size={11} />
+                      </span>
+                    )}
+                  </span>
+                  <span className="os-dock-text">{item.label}</span>
+                </motion.button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Right Island: Free-floating Workstation System Tray */}
+        <div className="os-island-right">
+          <div className="os-tray-dock">
+            {/* Adjacent compact style switcher */}
+            <NavStyleSwitcher className="os-adjacent-switcher" />
+
+            <span className="os-tray-divider" aria-hidden="true" />
+
+            {/* Brewbit Companion Daemon */}
+            <button
+              type="button"
+              className="os-tray-btn os-tray-daemon"
+              onClick={handleBrewbitDaemonClick}
+              title="Brewbit Companion Daemon — Online & Ready"
+            >
+              <span className="os-daemon-indicator" />
+              <Coffee size={16} />
+              <span className="os-daemon-label">brewbitd</span>
+            </button>
+
+            {/* Quick CV Download/Request */}
+            <a
+              className="os-tray-btn os-tray-cv"
+              data-tour="resume"
+              href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume"
+              title="Request Dhiraj's Resume (CV.pdf)"
+            >
+              <span>CV.pdf</span>
+              <ArrowUpRight size={15} />
+            </a>
+
+            {/* Theme Toggle */}
+            <button
+              type="button"
+              className="os-tray-btn os-tray-theme"
+              onClick={toggleTheme}
+              title={theme === "dark" ? "Toggle Light Mode" : "Toggle Dark Mode"}
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+            </button>
+
+            {/* Live System Clock */}
+            <div className="os-tray-clock" aria-label="Current system time">
+              <span>{currentTime || "12:00 PM"}</span>
+            </div>
+          </div>
+
+          {/* Mobile Menu Toggle Button */}
+          <button
+            type="button"
+            className="os-mobile-toggle"
+            onClick={() => setMobileOpen((open) => !open)}
+            aria-label="Toggle OS system menu"
+            aria-expanded={mobileOpen}
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer Panel */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             className="os-mobile-drawer"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.15 }}
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            transition={{ duration: 0.16 }}
           >
+            <div className="os-mobile-header">
+              <Terminal size={15} className="os-terminal-icon" />
+              <span className="os-mobile-title">dhiraj.os — SYSTEM LAUNCHER</span>
+              <span className="os-status-led" />
+            </div>
+
             <div className="os-mobile-list">
               {osNavItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = item.path ? location.pathname === item.path : false;
+
                 return (
                   <button
                     key={item.id}
@@ -180,29 +214,34 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
                       handleItemClick(item);
                     }}
                   >
-                    <Icon size={14} />
+                    <span className={`os-dock-dot ${isActive ? "is-active" : ""}`} aria-hidden="true" />
+                    <Icon size={17} />
                     <span>{item.label}</span>
-                    {isActive && <span className="os-mobile-badge">CURRENT</span>}
+                    {isActive && <span className="os-mobile-badge">ACTIVE</span>}
                   </button>
                 );
               })}
             </div>
+
             <div className="os-mobile-bottom">
-              <NavStyleSwitcher />
+              <NavStyleSwitcher className="os-mobile-switcher" />
               <a
                 className="os-tray-btn os-tray-cv"
                 href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume"
               >
                 <span>CV.pdf</span>
-                <ArrowUpRight size={11} />
+                <ArrowUpRight size={14} />
               </a>
               <button
                 type="button"
                 className="os-tray-btn os-tray-theme"
                 onClick={toggleTheme}
               >
-                {theme === "dark" ? <Sun size={13} /> : <Moon size={13} />}
+                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
               </button>
+              <div className="os-tray-clock">
+                <span>{currentTime || "12:00 PM"}</span>
+              </div>
             </div>
           </motion.div>
         )}

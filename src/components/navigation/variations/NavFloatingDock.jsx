@@ -78,10 +78,10 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
                     />
                   )}
                   <span className="floating-dock-icon-wrap">
-                    <Icon size={16} />
+                    <Icon size={20} />
                     {item.id === "brewbit" && (
                       <span className="floating-dock-sparkle">
-                        <Sparkles size={8} />
+                        <Sparkles size={11} />
                       </span>
                     )}
                   </span>
@@ -106,7 +106,7 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
               title="Request Resume"
             >
               <span>Resume</span>
-              <ArrowUpRight size={13} />
+              <ArrowUpRight size={15} />
             </a>
 
             {/* Theme toggle */}
@@ -117,7 +117,7 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
               aria-label="Toggle theme"
               title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+              {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
             </button>
           </div>
 
@@ -129,7 +129,7 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
@@ -159,7 +159,7 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
                       handleItemClick(item);
                     }}
                   >
-                    <Icon size={16} />
+                    <Icon size={18} />
                     <span>{item.label}</span>
                   </button>
                 );
@@ -172,14 +172,14 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
                 href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume"
               >
                 <span>Resume</span>
-                <ArrowUpRight size={13} />
+                <ArrowUpRight size={14} />
               </a>
               <button
                 type="button"
                 className="floating-theme-toggle"
                 onClick={toggleTheme}
               >
-                {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
               </button>
             </div>
           </motion.div>
