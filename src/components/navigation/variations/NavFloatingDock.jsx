@@ -36,24 +36,25 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
 
   return (
     <header className="floating-header-wrapper" role="banner">
-      <div className="floating-header-bar">
-        {/* Left: Brand / Logo */}
-        <button
-          className="floating-nav-brand"
-          onClick={() => {
-            if (newConversation) newConversation();
-            else navigate("/");
-          }}
-          aria-label="Dhiraj Wasu Home"
-        >
-          <span className="floating-brand-name">dhiraj.wasu</span>
-          <span className="floating-brand-dot">.</span>
-        </button>
+      <div className="floating-nav-container">
+        {/* Left Island: Free-floating Brand Pill */}
+        <div className="floating-island-left">
+          <button
+            className="floating-brand-pill"
+            onClick={() => {
+              if (newConversation) newConversation();
+              else navigate("/");
+            }}
+            aria-label="Dhiraj Wasu Home"
+          >
+            <span className="floating-brand-name">dhiraj.wasu</span>
+            <span className="floating-brand-dot">.</span>
+          </button>
+        </div>
 
-        {/* Right: Main Navigation Pill + Adjacent Switcher + Utilities */}
-        <div className="floating-nav-right">
-          {/* Main Navigation Pill */}
-          <nav className="floating-nav-pill" aria-label="Main navigation">
+        {/* Center Island: Free-floating Main Navigation Dock (Truly Centered) */}
+        <div className="floating-island-center">
+          <nav className="floating-nav-dock" aria-label="Main navigation">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = item.path ? location.pathname === item.path : false;
@@ -63,7 +64,7 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
                   key={item.id}
                   type="button"
                   data-tour={item.tour}
-                  className={`floating-nav-item ${isActive ? "is-active" : ""} ${item.id === "brewbit" ? "floating-nav-item--brewbit" : ""}`}
+                  className={`floating-dock-item ${isActive ? "is-active" : ""} ${item.id === "brewbit" ? "floating-dock-item--brewbit" : ""}`}
                   onClick={() => handleItemClick(item)}
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.97 }}
@@ -71,30 +72,33 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
                 >
                   {isActive && (
                     <motion.span
-                      layoutId="floating-nav-active-bg"
-                      className="floating-nav-active-bg"
+                      layoutId="floating-dock-active-bg"
+                      className="floating-dock-active-bg"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   )}
-                  <span className="floating-nav-icon-wrap">
+                  <span className="floating-dock-icon-wrap">
                     <Icon size={16} />
                     {item.id === "brewbit" && (
-                      <span className="floating-nav-sparkle">
+                      <span className="floating-dock-sparkle">
                         <Sparkles size={8} />
                       </span>
                     )}
                   </span>
-                  <span className="floating-nav-text">{item.label}</span>
+                  <span className="floating-dock-text">{item.label}</span>
                 </motion.button>
               );
             })}
           </nav>
+        </div>
 
-          {/* Compact Style Switcher - Immediately adjacent to navigation pill */}
-          <NavStyleSwitcher className="floating-adjacent-switcher" />
+        {/* Right Island: Free-floating Controls Dock & Utilities */}
+        <div className="floating-island-right">
+          <div className="floating-controls-dock">
+            {/* Adjacent compact style switcher */}
+            <NavStyleSwitcher className="floating-adjacent-switcher" />
 
-          {/* Resume & Theme Utilities */}
-          <div className="floating-nav-utilities">
+            {/* Resume button */}
             <a
               className="floating-resume-link"
               data-tour="resume"
@@ -104,6 +108,8 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
               <span>Resume</span>
               <ArrowUpRight size={13} />
             </a>
+
+            {/* Theme toggle */}
             <button
               type="button"
               className="floating-theme-toggle"

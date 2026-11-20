@@ -23,11 +23,14 @@ export default function DynamicNavigation({
   }
 
   return (
-    <NavFloatingDock
-      theme={theme}
-      toggleTheme={toggleTheme}
-      newConversation={newConversation}
-      isLegacyLayout={isLegacyLayout}
-    />
+    <>
+      <NavFloatingDock
+        theme={theme}
+        toggleTheme={toggleTheme}
+        newConversation={newConversation}
+        isLegacyLayout={isLegacyLayout}
+      />
+      {!isLegacyLayout && <div className="floating-header-spacer" aria-hidden="true" />}
+    </>
   );
 }
