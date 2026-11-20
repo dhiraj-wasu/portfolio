@@ -1,38 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Terminal, FolderCode, User, GraduationCap, Code2,
-  Trophy, Mail, Coffee, Sparkles, Moon, Sun, ArrowUpRight,
-  Wifi, BatteryCharging, ChevronDown
+  Terminal, Compass, User, FolderCode, GraduationCap, Coffee,
+  ArrowUpRight, Moon, Sun, Menu, X
 } from "lucide-react";
-
-const OS_MENUS = {
-  work: [
-    { label: "Anuvada AI (RAG)", desc: "Guidance System", url: "https://github.com/dhiraj-wasu/Anuvada_AI-A-Philosophy-Aware-Guidance-System" },
-    { label: "AI Mesh System", desc: "Distributed Queues", url: "https://github.com/dhiraj-wasu/AI-Mesh-System-with-Queue-Based-Distribution" },
-    { label: "ZeroTrust Defender", desc: "Endpoint SOAR", url: "https://github.com/dhiraj-wasu/ZeroTrust-Defender-AI-Driven-Ransomware-Detection" },
-    { label: "Low-Latency Cache (C++)", desc: "Systems Concurrency", url: "https://github.com/dhiraj-wasu/High-Performance-Cache-Speed-focused-C-" },
-    { label: "All Projects Workspace...", desc: "Directory View", path: "/projects", divider: true },
-  ],
-  profile: [
-    { label: "About Dhiraj", desc: "Background & story", path: "/about" },
-    { label: "Academic Timeline", desc: "SGGSIE&T B.Tech CSE", path: "/academics" },
-    { label: "Contact Developer...", desc: "dhirajwasu120@gmail.com", path: "/contact" },
-  ],
-  tools: [
-    { label: "Technical Skills", desc: "Languages & Frameworks", path: "/skills" },
-    { label: "Competitive Programming", desc: "Codeforces & LeetCode", path: "/cp" },
-    { label: "Request Resume (PDF)...", desc: "Official CV", action: "resume" },
-  ],
-};
+import NavStyleSwitcher from "../NavStyleSwitcher";
 
 export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeMenu, setActiveMenu] = useState(null);
   const [currentTime, setCurrentTime] = useState("");
-  const menuBarRef = useRef(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   // Live system clock
   useEffect(() => {
@@ -47,135 +26,187 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Close menus on outside click
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (menuBarRef.current && !menuBarRef.current.contains(e.target)) {
-        setActiveMenu(null);
-      }
-    };
-    if (activeMenu) {
-      document.addEventListener("mousedown", handleOutsideClick);
-    }
-    return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, [activeMenu]);
+  const osNavItems = [
+    { id: "home", label: "Home", path: "/", icon: Compass },
+    { id: "about", label: "About", path: "/about", icon: User, tour: "about" },
+    { id: "projects", label: "Projects", path: "/projects", icon: FolderCode, tour: "projects" },
+    { id: "experience", label: "Experience", path: "/academics", icon: GraduationCap, tour: "experience" },
+    { id: "brewbit", label: "Brewbit", action: "brewbit", icon: Coffee },
+  ];
 
-  const handleAction = (item) => {
-    setActiveMenu(null);
-    if (item.path) {
-      navigate(item.path);
-    } else if (item.url) {
-      window.open(item.url, "_blank", "noreferrer");
-    } else if (item.action === "resume") {
-      window.location.href = "mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume";
+  const handleItemClick = (item) => {
+    if (item.action === "brewbit") {
+      const p = new URLSearchParams(window.location.search);
+      p.set("guide", "true");
+      navigate(window.location.pathname + "?" + p.toString());
+    } else if (item.path) {
+      if (item.path === "/" && newConversation) {
+        newConversation();
+      } else {
+        navigate(item.path);
+      }
     }
   };
 
-  const handleBrewbitClick = () => {
+  const handleBrewbitDaemonClick = () => {
     const p = new URLSearchParams(window.location.search);
     p.set("guide", "true");
     navigate(window.location.pathname + "?" + p.toString());
   };
 
   return (
-    <header className="coffeee-landing-header nav-variation-os" ref={menuBarRef}>
-      {/* Left Menu Bar */}
-      <div className="nav-os-left">
+    <header className="os-menu-bar" role="banner" aria-label="Operating system navigation">
+      {/* Left: Minimal System Identity & Launcher Controls */}
+      <div className="os-nav-left">
         <button
-          className="nav-os-apple-logo"
+          type="button"
+          className="os-brand-btn"
           onClick={() => {
             if (newConversation) newConversation();
             else navigate("/");
           }}
           title="Home / Dhiraj OS"
         >
-          <Terminal size={14} />
-          <span>dhiraj.os</span>
+          <Terminal size={14} className="os-terminal-icon" />
+          <span className="os-brand-text">dhiraj.os</span>
         </button>
 
-        {/* Menu Items */}
-        <div className="nav-os-menus">
-          {["work", "profile", "tools"].map((menuKey) => (
-            <div key={menuKey} className="nav-os-menu-wrap">
-              <button
-                type="button"
-                className={`nav-os-menu-btn ${activeMenu === menuKey ? "is-open" : ""}`}
-                onClick={() => setActiveMenu((cur) => (cur === menuKey ? null : menuKey))}
-                onMouseEnter={() => {
-                  if (activeMenu) setActiveMenu(menuKey);
-                }}
-              >
-                <span>{menuKey.charAt(0).toUpperCase() + menuKey.slice(1)}</span>
-              </button>
+        <span className="os-nav-divider" aria-hidden="true" />
 
-              <AnimatePresence>
-                {activeMenu === menuKey && (
-                  <motion.div
-                    className="nav-os-dropdown-window"
-                    initial={{ opacity: 0, y: 4, scale: 0.98 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 4, scale: 0.98 }}
-                    transition={{ duration: 0.12 }}
-                  >
-                    {OS_MENUS[menuKey].map((subItem) => (
-                      <React.Fragment key={subItem.label}>
-                        {subItem.divider && <div className="nav-os-dropdown-divider" />}
-                        <button
-                          type="button"
-                          className="nav-os-dropdown-row"
-                          onClick={() => handleAction(subItem)}
-                        >
-                          <span className="nav-os-row-title">{subItem.label}</span>
-                          <span className="nav-os-row-desc">{subItem.desc}</span>
-                        </button>
-                      </React.Fragment>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
-        </div>
+        {/* Compact OS Launcher Navigation */}
+        <nav className="os-nav-launcher" aria-label="System sections">
+          {osNavItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = item.path ? location.pathname === item.path : false;
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                data-tour={item.tour}
+                className={`os-nav-item ${isActive ? "is-active" : ""}`}
+                onClick={() => handleItemClick(item)}
+                title={item.label}
+              >
+                <span className="os-nav-dot" aria-hidden="true" />
+                <Icon size={14} className="os-item-icon" />
+                <span className="os-item-label">{item.label}</span>
+              </button>
+            );
+          })}
+        </nav>
       </div>
 
-      {/* Right System Tray */}
-      <div className="nav-os-right">
+      {/* Right: Adjacent Style Switcher + Workstation System Tray */}
+      <div className="os-nav-right">
+        {/* Style Switcher styled cleanly to match OS aesthetic */}
+        <NavStyleSwitcher className="os-style-switcher" />
+
+        <span className="os-nav-divider" aria-hidden="true" />
+
         {/* Brewbit Daemon Status */}
         <button
           type="button"
-          className="nav-os-tray-item nav-os-tray-brewbit"
-          onClick={handleBrewbitClick}
-          title="Brewbit Assistant Daemon — Ready"
+          className="os-tray-btn os-tray-daemon"
+          onClick={handleBrewbitDaemonClick}
+          title="Brewbit Companion Daemon — Online & Ready"
         >
-          <span className="nav-os-brewbit-dot" />
+          <span className="os-daemon-indicator" />
           <Coffee size={13} />
-          <span>brewbitd</span>
+          <span className="os-daemon-label">brewbitd</span>
         </button>
 
-        {/* Quick Resume */}
+        {/* Quick CV Download/Request */}
         <a
-          className="nav-os-tray-item nav-os-tray-resume"
+          className="os-tray-btn os-tray-cv"
           data-tour="resume"
           href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume"
+          title="Request Dhiraj's Resume (PDF)"
         >
-          <span>CV.pdf</span> <ArrowUpRight size={11} />
+          <span>CV.pdf</span>
+          <ArrowUpRight size={11} />
         </a>
 
-        {/* Theme */}
+        {/* Theme Toggle */}
         <button
           type="button"
-          className="nav-os-tray-item nav-os-tray-icon"
+          className="os-tray-btn os-tray-theme"
           onClick={toggleTheme}
-          title="Toggle Theme"
+          title={theme === "dark" ? "Toggle Light Mode" : "Toggle Dark Mode"}
+          aria-label="Toggle theme"
         >
           {theme === "dark" ? <Sun size={13} /> : <Moon size={13} />}
         </button>
 
-        {/* System Time */}
-        <div className="nav-os-tray-item nav-os-tray-clock">
+        {/* Live System Clock */}
+        <div className="os-tray-clock" aria-label="Current system time">
           <span>{currentTime || "12:00 PM"}</span>
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          type="button"
+          className="os-mobile-toggle"
+          onClick={() => setMobileOpen((prev) => !prev)}
+          aria-label="Toggle OS system menu"
+          aria-expanded={mobileOpen}
+        >
+          {mobileOpen ? <X size={16} /> : <Menu size={16} />}
+        </button>
       </div>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            className="os-mobile-drawer"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.15 }}
+          >
+            <div className="os-mobile-list">
+              {osNavItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = item.path ? location.pathname === item.path : false;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    data-tour={item.tour}
+                    className={`os-mobile-row ${isActive ? "is-active" : ""}`}
+                    onClick={() => {
+                      setMobileOpen(false);
+                      handleItemClick(item);
+                    }}
+                  >
+                    <Icon size={14} />
+                    <span>{item.label}</span>
+                    {isActive && <span className="os-mobile-badge">CURRENT</span>}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="os-mobile-bottom">
+              <NavStyleSwitcher />
+              <a
+                className="os-tray-btn os-tray-cv"
+                href="mailto:dhirajwasu120@gmail.com?subject=Request%20for%20resume"
+              >
+                <span>CV.pdf</span>
+                <ArrowUpRight size={11} />
+              </a>
+              <button
+                type="button"
+                className="os-tray-btn os-tray-theme"
+                onClick={toggleTheme}
+              >
+                {theme === "dark" ? <Sun size={13} /> : <Moon size={13} />}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -3,27 +3,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { NAVIGATION_VARIATIONS } from "./NavigationComparisonData";
 import { NavigationLabContext } from "./NavigationLabContextDef";
 
-const STORAGE_KEY = "dhiraj_nav_variation";
+const STORAGE_KEY = "dhiraj_nav_style";
 
 export function NavigationLabProvider({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Helper to resolve variation ID from param or number
+  // Helper to resolve variation ID from param or name
   const resolveVariationId = useCallback((param) => {
     if (!param) return null;
     const lower = String(param).toLowerCase().trim();
-    // Check numeric string
-    const num = parseInt(lower, 10);
-    if (!isNaN(num)) {
-      const matchNum = NAVIGATION_VARIATIONS.find((v) => v.numericId === num);
-      if (matchNum) return matchNum.id;
+    if (lower === "os" || lower === "os-style" || lower === "2" || lower === "system") {
+      return "os";
     }
-    // Check key or short name
-    const match = NAVIGATION_VARIATIONS.find(
-      (v) => v.id === lower || v.id.startsWith(lower)
-    );
-    if (match) return match.id;
+    if (lower === "floating" || lower === "dock" || lower === "1" || lower === "pill") {
+      return "floating";
+    }
     return null;
   }, []);
 
@@ -34,16 +29,12 @@ export function NavigationLabProvider({ children }) {
       const resolved = resolveVariationId(navParam);
       if (resolved) return resolved;
 
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored && NAVIGATION_VARIATIONS.some((v) => v.id === stored)) {
-        return stored;
-      }
+      const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("dhiraj_nav_variation");
+      const storedResolved = resolveVariationId(stored);
+      if (storedResolved) return storedResolved;
     }
-    return "baseline";
+    return "floating";
   });
-
-  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
-  const [isLabOpen, setIsLabOpen] = useState(false);
 
   // Sync with URL query parameter when route location.search changes
   useEffect(() => {
@@ -56,89 +47,63 @@ export function NavigationLabProvider({ children }) {
           if (curr !== resolved) {
             try {
               localStorage.setItem(STORAGE_KEY, resolved);
-            } catch (e) {}
+            } catch {
+              // Ignore storage errors in restricted contexts
+            }
             return resolved;
           }
           return curr;
         });
       }
     }
-    const cmdParam = params.get("cmd");
-    if (cmdParam === "open" || cmdParam === "true") {
-      setIsCommandPaletteOpen(true);
-    }
   }, [location.search, resolveVariationId]);
 
   const setActiveNav = useCallback((id) => {
-    if (!NAVIGATION_VARIATIONS.some((v) => v.id === id)) return;
-    setActiveNavState(id);
+    const target = id === "os" || id === "os-style" ? "os" : "floating";
+    setActiveNavState(target);
     try {
-      localStorage.setItem(STORAGE_KEY, id);
-    } catch (e) {}
+      localStorage.setItem(STORAGE_KEY, target);
+    } catch {
+      // Ignore storage errors in restricted contexts
+    }
 
-    // Update URL query param using React Router navigate so location.search stays in sync
+    // Update URL query param cleanly without full page reload
     const params = new URLSearchParams(location.search);
-    params.set("nav", id);
-    const newSearch = params.toString();
+    params.set("nav", target);
     navigate(
       {
         pathname: location.pathname,
-        search: newSearch ? `?${newSearch}` : "",
+        search: `?${params.toString()}`,
       },
       { replace: true }
     );
   }, [location.pathname, location.search, navigate]);
 
-  const cycleNav = useCallback((direction = 1) => {
-    const currentIndex = NAVIGATION_VARIATIONS.findIndex((v) => v.id === activeNav);
-    const validIndex = currentIndex >= 0 ? currentIndex : 0;
-    const nextIndex = (validIndex + direction + NAVIGATION_VARIATIONS.length) % NAVIGATION_VARIATIONS.length;
-    const nextVar = NAVIGATION_VARIATIONS[nextIndex];
-    if (nextVar) {
-      setActiveNav(nextVar.id);
-    }
+  const toggleNav = useCallback(() => {
+    setActiveNav(activeNav === "floating" ? "os" : "floating");
   }, [activeNav, setActiveNav]);
 
-  // Global keyboard shortcut for ⌘K / Ctrl+K and Nav Lab
+  // Keyboard shortcut: Alt+N or Alt+S toggles style
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Toggle Command Palette on Cmd+K or Ctrl+K
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      if (e.altKey && (e.key.toLowerCase() === "n" || e.key.toLowerCase() === "s")) {
         e.preventDefault();
-        setIsCommandPaletteOpen((prev) => !prev);
-      }
-      // Toggle Navigation Lab with Alt+N
-      if (e.altKey && e.key.toLowerCase() === "n") {
-        e.preventDefault();
-        setIsLabOpen((prev) => !prev);
-      }
-      // Cycle navigation options with Alt+Right / Alt+Left
-      if (e.altKey && e.key === "ArrowRight") {
-        e.preventDefault();
-        cycleNav(1);
-      }
-      if (e.altKey && e.key === "ArrowLeft") {
-        e.preventDefault();
-        cycleNav(-1);
+        toggleNav();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [cycleNav]);
+  }, [toggleNav]);
 
   const currentVariation = NAVIGATION_VARIATIONS.find((v) => v.id === activeNav) || NAVIGATION_VARIATIONS[0];
 
   const value = {
     activeNav,
     setActiveNav,
-    cycleNav,
+    toggleNav,
     currentVariation,
     variations: NAVIGATION_VARIATIONS,
-    isCommandPaletteOpen,
-    setIsCommandPaletteOpen,
-    isLabOpen,
-    setIsLabOpen,
   };
 
   return (

@@ -8,7 +8,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import CoffeeeExperience from "./components/coffeee/CoffeeeExperience";
 import BrewbitGuide from "./components/coffeee/BrewbitGuide";
 import { NavigationLabProvider } from "./components/navigation/NavigationLabContext";
-import NavigationLabWidget from "./components/navigation/NavigationLabWidget";
 import "./components/navigation/navigation-lab.css";
 
 import About from "./components/About";
@@ -108,7 +107,6 @@ function App() {
           <Route path="/*" element={<LegacyPortfolio theme={theme} toggleTheme={toggleTheme} sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} />} />
         </Routes>
         <BrewbitGuide theme={theme} />
-        <NavigationLabWidget theme={theme} />
         <Analytics />
       </NavigationLabProvider>
     </Router>
