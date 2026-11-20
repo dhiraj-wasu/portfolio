@@ -224,11 +224,11 @@
 }
 
 /* --------------------------------------------------------------------------
-   Variation 2: Floating Bottom Dock
+   Variation 2: Floating Top Navigation Dock (Centered above Mascot)
    -------------------------------------------------------------------------- */
 .nav-floating-dock-container {
   position: fixed;
-  bottom: 22px;
+  top: 14px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
@@ -237,26 +237,26 @@
 .nav-floating-dock-pill {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 5px 8px;
+  gap: 6px;
+  padding: 6px 12px;
   border: 1px solid var(--c-line);
   border-radius: 999px;
   background: rgba(255, 254, 250, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 16px 36px rgba(35, 29, 22, 0.16);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 16px 44px rgba(35, 29, 22, 0.16);
+  transition: all .2s ease;
 }
 .theme-dark .nav-floating-dock-pill {
-  background: rgba(34, 34, 32, 0.94);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  background: rgba(30, 30, 28, 0.94);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45);
 }
 .nav-dock-btn {
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 6px 14px;
+  gap: 8px;
+  padding: 8px 16px;
   border: 0;
   background: transparent;
   color: var(--c-muted);
@@ -264,7 +264,7 @@
   border-radius: 999px;
   user-select: none;
   font: inherit;
-  transition: color .15s;
+  transition: color .15s, transform .15s;
 }
 .nav-dock-btn:hover,
 .nav-dock-btn.is-active {
@@ -276,21 +276,29 @@
   border-radius: 999px;
   background: var(--c-panel-2);
   border: 1px solid var(--c-line);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   z-index: -1;
+}
+.theme-dark .nav-dock-active-background {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
 .nav-dock-icon-wrap {
   position: relative;
   display: grid;
   place-items: center;
+  color: var(--c-text);
+}
+.nav-dock-btn.is-active .nav-dock-icon-wrap {
+  color: var(--c-accent);
 }
 .nav-dock-brewbit-sparkle {
   position: absolute;
-  top: -3px;
-  right: -5px;
+  top: -4px;
+  right: -6px;
   color: var(--c-accent);
 }
 .nav-dock-label {
-  font-size: 9.5px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: .2px;
 }
@@ -1318,12 +1326,19 @@
     padding: 5px 10px;
   }
   .nav-floating-dock-container {
-    bottom: 14px;
+    top: 8px;
+    width: auto;
+    max-width: calc(100vw - 16px);
+  }
+  .nav-floating-dock-pill {
+    padding: 4px 8px;
+    gap: 2px;
   }
   .nav-dock-btn {
-    padding: 5px 9px;
+    padding: 6px 10px;
+    gap: 4px;
   }
   .nav-dock-label {
-    font-size: 8.5px;
+    font-size: 11px;
   }
 }

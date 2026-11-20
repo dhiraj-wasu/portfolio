@@ -34,7 +34,7 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
 
   return (
     <>
-      {/* Minimal Top Utility Header */}
+      {/* Minimal Top Utility Header with Centered Floating Dock */}
       <header className="coffeee-landing-header nav-variation-dock-header">
         <button
           className="coffeee-landing-brand"
@@ -43,8 +43,49 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
             else navigate("/");
           }}
         >
-          dhiraj.wasu<span>.</span><small>DOCK</small>
+          dhiraj.wasu<span>.</span><small>FLOATING</small>
         </button>
+
+        {/* Floating Top Navigation Dock (Centered above Mascot) */}
+        <motion.nav
+          className="nav-floating-dock-container"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 280, damping: 24 }}
+          aria-label="Quick dock navigation"
+        >
+          <div className="nav-floating-dock-pill">
+            {dockItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = item.path ? location.pathname === item.path : false;
+
+              return (
+                <motion.button
+                  key={item.id}
+                  type="button"
+                  className={`nav-dock-btn ${isActive ? "is-active" : ""} ${item.id === "brewbit" ? "nav-dock-btn--brewbit" : ""}`}
+                  onClick={() => handleItemClick(item)}
+                  whileHover={{ y: -2, scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  title={item.label}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="dock-active-pill"
+                      className="nav-dock-active-background"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  <span className="nav-dock-icon-wrap">
+                    <Icon size={20} />
+                    {item.id === "brewbit" && <span className="nav-dock-brewbit-sparkle"><Sparkles size={10} /></span>}
+                  </span>
+                  <span className="nav-dock-label">{item.label}</span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </motion.nav>
 
         <div className="coffeee-landing-actions">
           <a
@@ -81,47 +122,6 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
           </button>
         </div>
       </header>
-
-      {/* Floating Bottom Navigation Dock */}
-      <motion.nav
-        className="nav-floating-dock-container"
-        initial={{ y: 30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 280, damping: 24 }}
-        aria-label="Quick dock navigation"
-      >
-        <div className="nav-floating-dock-pill">
-          {dockItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = item.path ? location.pathname === item.path : false;
-
-            return (
-              <motion.button
-                key={item.id}
-                type="button"
-                className={`nav-dock-btn ${isActive ? "is-active" : ""} ${item.id === "brewbit" ? "nav-dock-btn--brewbit" : ""}`}
-                onClick={() => handleItemClick(item)}
-                whileHover={{ y: -3, scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                title={item.label}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="dock-active-pill"
-                    className="nav-dock-active-background"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                  />
-                )}
-                <span className="nav-dock-icon-wrap">
-                  <Icon size={17} />
-                  {item.id === "brewbit" && <span className="nav-dock-brewbit-sparkle"><Sparkles size={8} /></span>}
-                </span>
-                <span className="nav-dock-label">{item.label}</span>
-              </motion.button>
-            );
-          })}
-        </div>
-      </motion.nav>
     </>
   );
 }
