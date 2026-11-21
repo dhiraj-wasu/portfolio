@@ -8,10 +8,10 @@ export const Education = () => {
     {
       school: "Shri Guru Gobind Singhji Institute of Engineering and Technology",
       location: "Nanded, Maharashtra, India",
-      duration: "Aug 2023 - May 2026",
+      duration: "Aug 2023 – May 2026",
       degree: "B.Tech in Computer Science and Engineering",
-      grade: "CGPA: 8.40 / 10",
-      image: "/assets/college_img.jpg",
+      grade: "CGPA: 8.52 / 10",
+      image: "/assets/sggs.jpeg",
       link: "https://www.sggs.ac.in/",
       coursework: [
         "Distributed Systems",
@@ -28,10 +28,10 @@ export const Education = () => {
     {
       school: "G.H. Raisoni Institute of Engineering & Technology",
       location: "Nagpur, Maharashtra, India",
-      duration: "May 2020 - June 2023",
-      degree: "Diploma in Computer Science and Engineering",
+      duration: "May 2020 – Jun 2023",
+      degree: "Diploma in Computer Engineering",
       grade: "CGPA: 9.44 / 10",
-      image: "/assets/school_img.jpg",
+      image: "/assets/ghriet.png",
       link: "https://ghrietn.raisoni.net/",
       coursework: [
         "Data Structures & Algorithms",
@@ -42,6 +42,24 @@ export const Education = () => {
       ],
       description:
         "Completed Diploma with exceptional academic standing (9.44 CGPA). Awarded Student of the Institute & Department (2023) and secured 1st Place as Winner in the State Level Project Competition (DIPEX 2023).",
+    },
+    {
+      school: "St. Joseph's Convent Senior Secondary School",
+      location: "Fetri, Nagpur, Maharashtra, India",
+      duration: "June 2019 - March 2020",
+      degree: "Secondary School Certificate (Class X - CBSE)",
+      grade: "79.80%",
+      image: "/assets/sjc.png",
+      link: "https://sjcsfetrinagpur.edu.in/",
+      coursework: [
+        "Mathematics",
+        "Science",
+        "Social Science",
+        "English",
+        "Information Technology",
+      ],
+      description:
+        "Completed Class X secondary school education under CBSE board with 79.80%, building strong early fundamentals in mathematics, science, and computing.",
     },
   ];
 

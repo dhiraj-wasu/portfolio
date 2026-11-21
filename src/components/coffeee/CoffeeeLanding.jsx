@@ -79,6 +79,7 @@ export default function CoffeeeLanding({
         theme={theme}
         toggleTheme={toggleTheme}
         newConversation={newConversation}
+        onPromptChat={submitQuestion}
       />
 
       <main className="coffeee-landing-main">

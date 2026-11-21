@@ -26,6 +26,10 @@
 .coffeee-sidebar-caption {padding:0 10px 8px;color:var(--c-muted);font-size:9px;font-weight:700;letter-spacing:1.35px}
 .coffeee-sidebar-section > button {height:37px;display:flex;align-items:center;gap:10px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:var(--c-muted);font:inherit;font-size:12px;text-align:left;cursor:pointer}
 .coffeee-sidebar-section > button:hover,.coffeee-sidebar-section > button.is-active {background:var(--c-panel-2);color:var(--c-text)}
+.coffeee-sidebar-classic-btn {margin-top:6px;border:1px solid var(--c-line)!important;background:var(--c-panel-2)!important;color:var(--c-text)!important;font-weight:600!important}
+.coffeee-sidebar-classic-btn:hover {border-color:var(--c-accent)!important;color:var(--c-accent)!important}
+.coffeee-topbar-classic-btn {display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--c-line);background:var(--c-panel-2);color:var(--c-text);font:inherit;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s ease}
+.coffeee-topbar-classic-btn:hover {border-color:var(--c-accent);color:var(--c-accent);transform:translateY(-1px)}
 .coffeee-history {margin-top:30px}
 .coffeee-history > button span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .coffeee-history-empty {padding:0 10px;color:var(--c-muted);font-size:11px;line-height:1.6}

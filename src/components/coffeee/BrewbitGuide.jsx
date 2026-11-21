@@ -18,8 +18,13 @@ export default function BrewbitGuide({ theme = "light" }) {
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
 
-  // Mode: "hidden" | "companion" | "response" | "floating"
+  // Mode: "hidden" | "companion" | "response" | "floating" | "tour"
   const [guideState, setGuideState] = useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("tour") === "true") return "tour";
+      if (params.get("guide") === "true") return "companion";
+    }
     const seen = localStorage.getItem(STORAGE_KEY);
     return seen === "true" ? "floating" : "hidden";
   });
@@ -219,29 +224,29 @@ export default function BrewbitGuide({ theme = "light" }) {
         setActiveResponse({
           type: "how-to",
           title: "How to Use This Portfolio",
-          body: "This portfolio combines an interactive AI mascot guide with comprehensive deep-dive pages:",
+          body: "This portfolio combines an interactive AI mascot guide with a full classic portfolio site:",
           tips: [
             {
-              title: "Brewbit Guide & Chat",
-              desc: "Ask any natural question about Dhiraj's code, stack, or experience, or click suggestion chips anytime.",
+              title: "1. How to Chat & What to Ask",
+              desc: "Type in the composer or click suggestion chips! Ask about backend systems, distributed architectures, Anuvada AI, cache engines, or skills. Brewbit provides instant answers, architecture breakdowns, and GitHub links.",
             },
             {
-              title: "Page Navigation",
-              desc: "Use the top header or mobile menu to explore About, Projects, Skills, Academics, CP, and Contact.",
+              title: "2. Nav Bar Sections Prompt into Chat",
+              desc: "Clicking 'About', 'Projects', or 'Experience' in the top navbar immediately prompts Brewbit right in the chat—giving you instant tailored answers without leaving the interactive experience.",
             },
             {
-              title: "Project Deep Dives",
-              desc: "Click external links on project cards to inspect the GitHub repositories and source code directly.",
+              title: "3. Visit the Normal Portfolio Site",
+              desc: "Prefer a traditional multi-page website? Click the new 'Classic Site ↗' button in the top navigation bar anytime to browse the full static portfolio.",
             },
             {
-              title: "Resume Request",
-              desc: "Click 'Request resume' in the top bar to request Dhiraj's official CV directly via email.",
-            },
-            {
-              title: "Dark / Light Mode",
-              desc: "Toggle between light and dark themes anytime using the sun/moon icon.",
+              title: "4. Resume & Contact",
+              desc: "Click 'CV.pdf' / 'Resume' in the header to request Dhiraj's official resume, or ask Brewbit for contact information.",
             },
           ],
+          link: {
+            label: "Visit Classic Portfolio Site",
+            href: "/classic",
+          },
         });
         setGuideState("response");
       }

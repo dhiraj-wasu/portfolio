@@ -7,6 +7,7 @@ export default function DynamicNavigation({
   theme,
   toggleTheme,
   newConversation,
+  onPromptChat,
   isLegacyLayout = false,
 }) {
   const { activeNav } = useNavigationLab();
@@ -17,6 +18,7 @@ export default function DynamicNavigation({
         theme={theme}
         toggleTheme={toggleTheme}
         newConversation={newConversation}
+        onPromptChat={onPromptChat}
         isLegacyLayout={isLegacyLayout}
       />
     );
@@ -28,6 +30,7 @@ export default function DynamicNavigation({
         theme={theme}
         toggleTheme={toggleTheme}
         newConversation={newConversation}
+        onPromptChat={onPromptChat}
         isLegacyLayout={isLegacyLayout}
       />
       {!isLegacyLayout && <div className="floating-header-spacer" aria-hidden="true" />}

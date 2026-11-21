@@ -1,6 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
-  <rect width="64" height="64" rx="14" fill="#000000"/>
-  <text x="50%" y="52%" text-anchor="middle" fill="#ffffff" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="bold" dominant-baseline="middle">
-    DW
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 0 500 500" width="64" height="64" role="img" aria-label="Brewbit Mascot">
+<title>Brewbit Mascot</title><desc>A friendly cream coffee cup robot wearing headphones and a hoodie, waving hello.</desc>
+<defs>
+ <linearGradient id="cup" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9ed"/><stop offset="1" stop-color="#e8d4bc"/></linearGradient>
+ <linearGradient id="brown" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9a6d4e"/><stop offset="1" stop-color="#4e3022"/></linearGradient>
+ <linearGradient id="hood" x1="0" y1="0" x2="0.9" y2="1"><stop stop-color="#fff6e8"/><stop offset="1" stop-color="#d9c0a4"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="12"/></filter>
+</defs>
+<ellipse cx="210" cy="472" rx="125" ry="17" fill="#5b3d2c" opacity=".16" filter="url(#shadow)"/>
+<!-- backpack -->
+<path d="M100 275 Q58 290 67 365 L89 408 Q105 425 133 405 L150 320Z" fill="#684532"/>
+<path d="M103 295 Q80 319 91 376" fill="none" stroke="#b58b68" stroke-width="8" stroke-linecap="round"/>
+<!-- legs -->
+<path d="M157 386 L153 432 Q153 448 169 448 L193 448 L203 390Z" fill="#684532"/>
+<path d="M239 389 L244 433 Q247 449 264 447 L284 444 L277 383Z" fill="#684532"/>
+<!-- shoes -->
+<path d="M133 429 Q145 417 173 426 L199 445 Q211 465 190 472 L126 470 Q109 462 119 445Z" fill="#fff0dc" stroke="#b28a69" stroke-width="5"/>
+<path d="M235 429 Q254 415 277 427 L305 447 Q317 464 294 472 L235 470 Q219 461 224 444Z" fill="#fff0dc" stroke="#b28a69" stroke-width="5"/>
+<path d="M143 445 L181 445 M245 445 L284 445" stroke="#8b6044" stroke-width="6" stroke-linecap="round"/>
+<!-- arms -->
+<path d="M112 285 Q78 302 77 344 Q80 361 97 355 L133 321" fill="none" stroke="#e9d6be" stroke-width="29" stroke-linecap="round"/>
+<path d="M284 288 Q320 279 328 239" fill="none" stroke="#e9d6be" stroke-width="29" stroke-linecap="round"/>
+<path d="M322 238 Q309 219 319 205 M331 235 Q337 213 352 210 M337 244 Q357 237 365 247" fill="none" stroke="#e9d6be" stroke-width="16" stroke-linecap="round"/>
+<!-- cup body -->
+<path d="M94 142 Q98 119 126 116 L293 116 Q319 120 324 146 L310 302 Q306 337 274 345 L142 345 Q111 337 108 305Z" fill="url(#cup)" stroke="#b58b68" stroke-width="5"/>
+<!-- hoodie -->
+<path d="M106 286 Q127 266 151 273 Q205 297 265 270 Q296 270 314 290 L306 351 Q291 370 210 370 Q128 370 111 350Z" fill="url(#hood)" stroke="#b58b68" stroke-width="4"/>
+<path d="M155 280 Q178 307 210 309 Q243 307 268 279" fill="none" stroke="#c4a384" stroke-width="9"/>
+<path d="M169 306 L172 343 M251 306 L247 343" stroke="#b58b68" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="210" cy="333" rx="14" ry="19" fill="#805338"/><path d="M205 319 Q214 332 207 347" fill="none" stroke="#f2dfc9" stroke-width="3"/>
+<!-- lid -->
+<path d="M83 151 Q83 105 126 91 L291 91 Q337 106 337 151 L322 170 L96 170Z" fill="url(#brown)" stroke="#563423" stroke-width="5"/>
+<ellipse cx="210" cy="119" rx="111" ry="29" fill="#6a402b"/>
+<ellipse cx="210" cy="116" rx="91" ry="19" fill="#c58c4e"/>
+<path d="M160 117 Q190 93 214 115 Q234 131 260 112 Q236 145 202 130 Q181 124 160 117" fill="#f7e3c6"/>
+<!-- steam -->
+<path d="M205 84 Q180 57 209 37 Q234 17 211 4" fill="none" stroke="#d5bca2" stroke-width="9" stroke-linecap="round" opacity=".9"/>
+<!-- headset -->
+<path d="M87 174 Q66 192 70 232" fill="none" stroke="#5b3928" stroke-width="15" stroke-linecap="round"/>
+<rect x="55" y="190" width="45" height="70" rx="21" fill="url(#brown)" stroke="#4d3022" stroke-width="4"/>
+<rect x="66" y="204" width="22" height="42" rx="11" fill="#d8a36f"/>
+<path d="M326 178 Q346 195 342 228" fill="none" stroke="#5b3928" stroke-width="11" stroke-linecap="round"/>
+<!-- face -->
+<path d="M143 208 Q157 195 176 204 M242 204 Q260 193 278 207" fill="none" stroke="#65432f" stroke-width="7" stroke-linecap="round"/>
+<ellipse cx="163" cy="234" rx="23" ry="25" fill="#fffdf8" stroke="#6c4a35" stroke-width="4"/>
+<ellipse cx="259" cy="234" rx="23" ry="25" fill="#fffdf8" stroke="#6c4a35" stroke-width="4"/>
+<ellipse cx="167" cy="237" rx="12" ry="16" fill="#4a3024"/><ellipse cx="255" cy="237" rx="12" ry="16" fill="#4a3024"/>
+<circle cx="171" cy="230" r="5" fill="#fff"/><circle cx="259" cy="230" r="5" fill="#fff"/>
+<path d="M185 231 Q210 215 235 231" fill="none" stroke="#6c4a35" stroke-width="5"/>
+<path d="M184 270 Q210 291 237 268 Q228 300 205 296 Q189 291 184 270" fill="#8f4937"/>
+<path d="M192 274 Q210 280 229 273" fill="none" stroke="#f5b4a0" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="133" cy="267" rx="13" ry="7" fill="#e6a28d" opacity=".55"/><ellipse cx="284" cy="267" rx="13" ry="7" fill="#e6a28d" opacity=".55"/>
+<!-- cup handle -->
+<path d="M318 194 Q362 179 363 222 Q364 255 324 251" fill="none" stroke="#a77a59" stroke-width="12" stroke-linecap="round"/>
+<!-- small coffee bean emblem -->
+<ellipse cx="211" cy="333" rx="9" ry="14" fill="#75462f"/><path d="M207 322 Q218 333 211 344" fill="none" stroke="#f0dcc6" stroke-width="2.5"/>
+<!-- sparkles -->
+<path d="M361 139 L366 153 L380 158 L366 163 L361 178 L356 163 L342 158 L356 153Z" fill="#c18a53"/>
+<circle cx="43" cy="302" r="5" fill="#c18a53"/><circle cx="379" cy="290" r="4" fill="#c18a53"/>
 </svg>

@@ -8,6 +8,8 @@ import {
   Layers,
   Database,
   Cpu,
+  GitBranch,
+  Cloud,
 } from "lucide-react";
 import ScrollAnimation from "../components/ScrollAnimation";
 import {
@@ -20,71 +22,75 @@ import {
   DockerIcon,
   GitIcon,
   GitHubIcon,
-  LinuxIcon,
-  BashIcon,
+  NodeIcon,
+  ReactIcon,
   SQLIcon,
 } from "../components/TechLogos";
 
 export const Skills = () => {
   const skillCategories = [
     {
-      category: "Programming Languages",
+      category: "Languages & Frameworks",
       icon: <Code className="w-6 h-6 text-white" />,
       items: [
-        { name: "C++", icon: <CppIcon /> },
         { name: "Python", icon: <PythonIcon /> },
         { name: "Java", icon: <JavaIcon /> },
-        { name: "C", icon: <CppIcon /> },
+        { name: "C++", icon: <CppIcon /> },
         { name: "SQL", icon: <SQLIcon /> },
-        { name: "Bash", icon: <BashIcon /> },
-      ],
-    },
-    {
-      category: "Backend & Distributed Systems",
-      icon: <Server className="w-6 h-6 text-white" />,
-      items: [
         { name: "FastAPI", icon: <FastAPIIcon /> },
         { name: "Django REST", icon: <DjangoIcon /> },
-        { name: "Microservices", icon: <Layers className="w-4 h-4" /> },
-        { name: "Redis", icon: <RedisIcon /> },
-        { name: "Celery", icon: <Server className="w-4 h-4" /> },
-        { name: "WebSockets", icon: <Cpu className="w-4 h-4" /> },
+        { name: "Node.js", icon: <NodeIcon /> },
+        { name: "React", icon: <ReactIcon /> },
       ],
     },
     {
-      category: "Systems & Infrastructure",
-      icon: <Terminal className="w-6 h-6 text-white" />,
-      items: [
-        { name: "Distributed Systems", icon: <Layers className="w-4 h-4" /> },
-        { name: "Concurrency", icon: <Cpu className="w-4 h-4" /> },
-        { name: "Docker", icon: <DockerIcon /> },
-        { name: "Linux", icon: <LinuxIcon /> },
-        { name: "Git", icon: <GitIcon /> },
-        { name: "GitHub Actions", icon: <GitHubIcon /> },
-      ],
-    },
-    {
-      category: "AI & Intelligent Automation",
+      category: "AI & GenAI",
       icon: <Brain className="w-6 h-6 text-white" />,
       items: [
         { name: "LLMs", icon: <Brain className="w-4 h-4" /> },
         { name: "RAG Pipelines", icon: <Database className="w-4 h-4" /> },
-        { name: "Vector DBs", icon: <Database className="w-4 h-4" /> },
-        { name: "Agent Architecture", icon: <Layers className="w-4 h-4" /> },
-        { name: "System Design", icon: <Server className="w-4 h-4" /> },
-        { name: "Automation", icon: <Wrench className="w-4 h-4" /> },
+        { name: "AI Agents", icon: <Layers className="w-4 h-4" /> },
+        { name: "Fine-tuning", icon: <Cpu className="w-4 h-4" /> },
+        { name: "Knowledge Graph", icon: <GitBranch className="w-4 h-4" /> },
+        { name: "LangChain", icon: <Layers className="w-4 h-4" /> },
+        { name: "LangGraph", icon: <Layers className="w-4 h-4" /> },
+        { name: "MCP", icon: <Server className="w-4 h-4" /> },
       ],
     },
     {
-      category: "Tools & Development",
+      category: "Cloud & Infrastructure",
+      icon: <Cloud className="w-6 h-6 text-white" />,
+      items: [
+        { name: "Docker", icon: <DockerIcon /> },
+        { name: "Microservices", icon: <Layers className="w-4 h-4" /> },
+        { name: "Cloud Architectures", icon: <Cloud className="w-4 h-4" /> },
+        { name: "CI / CD", icon: <GitBranch className="w-4 h-4" /> },
+        { name: "Redis", icon: <RedisIcon /> },
+        { name: "Task Queues", icon: <Server className="w-4 h-4" /> },
+      ],
+    },
+    {
+      category: "Software Systems Engineering",
+      icon: <Terminal className="w-6 h-6 text-white" />,
+      items: [
+        { name: "Distributed Systems", icon: <Layers className="w-4 h-4" /> },
+        { name: "Multithreading", icon: <Cpu className="w-4 h-4" /> },
+        { name: "Sync / Async Programming", icon: <Server className="w-4 h-4" /> },
+        { name: "Concurrency", icon: <Cpu className="w-4 h-4" /> },
+        { name: "Event-Driven Arch", icon: <Layers className="w-4 h-4" /> },
+        { name: "System Reliability", icon: <Server className="w-4 h-4" /> },
+      ],
+    },
+    {
+      category: "Developer Tools",
       icon: <Wrench className="w-6 h-6 text-white" />,
       items: [
-        { name: "VS Code", icon: <Terminal className="w-4 h-4" /> },
+        { name: "Git", icon: <GitIcon /> },
+        { name: "GitHub", icon: <GitHubIcon /> },
+        { name: "GitHub Actions", icon: <GitHubIcon /> },
+        { name: "GitHub Copilot", icon: <Brain className="w-4 h-4" /> },
         { name: "Postman", icon: <Wrench className="w-4 h-4" /> },
-        { name: "Ubuntu / Linux", icon: <LinuxIcon /> },
-        { name: "MySQL", icon: <SQLIcon /> },
-        { name: "Git CLI", icon: <GitIcon /> },
-        { name: "Bash Scripting", icon: <BashIcon /> },
+        { name: "Qdrant Vector DB", icon: <Database className="w-4 h-4" /> },
       ],
     },
     {
@@ -92,10 +98,10 @@ export const Skills = () => {
       icon: <Cpu className="w-6 h-6 text-white" />,
       items: [
         { name: "DSA", icon: <Code className="w-4 h-4" /> },
-        { name: "Multithreading", icon: <Cpu className="w-4 h-4" /> },
-        { name: "Cache Architecture", icon: <Database className="w-4 h-4" /> },
-        { name: "Thread Safety", icon: <Server className="w-4 h-4" /> },
+        { name: "System Design", icon: <Server className="w-4 h-4" /> },
         { name: "Problem Solving", icon: <Brain className="w-4 h-4" /> },
+        { name: "Cache Architecture", icon: <Database className="w-4 h-4" /> },
+        { name: "Traceability Graphs", icon: <GitBranch className="w-4 h-4" /> },
         { name: "High Throughput", icon: <Layers className="w-4 h-4" /> },
       ],
     },
@@ -106,7 +112,7 @@ export const Skills = () => {
       <ScrollAnimation>
         <h2 className="text-4xl font-bold mb-4 gradient-text">Technical Skills</h2>
         <p className="text-gray-400 mb-12 max-w-2xl">
-          A comprehensive overview of my technical expertise, programming languages, backend frameworks, and systems engineering tools.
+          A comprehensive overview of my technical expertise, programming languages, backend frameworks, GenAI toolkits, and systems engineering practices.
         </p>
       </ScrollAnimation>
 

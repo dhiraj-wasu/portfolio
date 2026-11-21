@@ -7,19 +7,28 @@ import contactConfig from "../config/contact";
 export const Experience = () => {
   const experiences = [
     {
-      title: "Backend & Systems Engineer",
-      company: "Engineering Projects & Systems Research",
-      location: "Nanded, Maharashtra",
-      period: "2023 - Present",
-      type: "Projects & Systems",
-      image: "/assets/college_img.jpg",
+      title: "Software Engineer Intern",
+      company: "Connecticus Technologies",
+      location: "Pune, India",
+      period: "Aug 2026 – Present",
+      type: "Internship & Systems",
+      image: "/assets/sggs.jpeg",
       showCertificate: false,
       description: [
-        "Architected distributed task orchestration pipelines using FastAPI and Redis queues with dynamic worker heartbeats, task retries, and automated load scaling.",
-        "Engineered a speed-focused, low-latency in-memory cache engine in C++ with custom memory management, multithreading, and optimized LRU eviction algorithms.",
-        "Built philosophy-aware Retrieval-Augmented Generation (RAG) system with intent-based query routing, vector embeddings, and quote-faithful semantic retrieval.",
-        "Engineered ZeroTrust Defender, an AI-driven distributed ransomware detection and endpoint isolation architecture with real-time threat orchestration.",
-        "Implemented thread-safe distributed cache in Java with fine-grained concurrent locking and robust eviction policies.",
+        "Designed and developed backend components of TrustOps Next, a Polarion-integrated risk and compliance product that turns failed CI test results into prepared tasks with priority, reviewer and SLA from approved rule cards, working in an Agile team.",
+        "Built an event-driven ingestion pipeline (REST gateway, duplicate detection, queue-based writer with rate limiting, exponential-backoff retries and a dead-letter queue) and a traceability graph that shows every hazard a failed test reaches.",
+      ],
+    },
+    {
+      title: "AI & Backend Engineering Intern",
+      company: "RGESIndia",
+      location: "Hyderabad, India",
+      period: "Apr 2025",
+      type: "Internship & AI Decision Pipelines",
+      image: "/assets/ghriet.png",
+      showCertificate: false,
+      description: [
+        "Built AI and machine learning decision pipelines processing multi-source data (patient vitals, traffic, driver reliability) and integrated LLM-based modules, improving prioritization accuracy and supporting real-time automated decision-making.",
       ],
     },
     {
@@ -28,7 +37,7 @@ export const Experience = () => {
       location: "Maharashtra, India",
       period: "2023",
       type: "Competition & Leadership",
-      image: "/assets/school_img.jpg",
+      image: "/assets/ghriet.png",
       certificateUrl: contactConfig.linkedin,
       showCertificate: true,
       description: [

@@ -8,29 +8,29 @@ import contactConfig from "../config/contact";
 export const About = () => {
   const achievements = [
     {
-      icon: <Code2 className="w-6 h-6 text-white" />,
-      title: "6+ Systems Projects",
-      description: "Low-latency caches, distributed queues, and RAG architectures",
+      icon: <Briefcase className="w-6 h-6 text-white" />,
+      title: "Software Engineer Intern",
+      description: "Connecticus Technologies (TrustOps Next) & RGESIndia",
     },
     {
-      icon: <Briefcase className="w-6 h-6 text-white" />,
-      title: "Technical Honors",
-      description: "Awarded Student of the Institute & Department (2023)",
+      icon: <Code2 className="w-6 h-6 text-white" />,
+      title: "Systems & AI Engineering",
+      description: "Distributed task queues, event-driven pipelines & RAG systems",
     },
     {
       icon: <GraduationCap className="w-6 h-6 text-white" />,
       title: "State Level Winner",
-      description: "1st Place – DIPEX 2023 Technical Innovation Competition",
+      description: "1st Place – DIPEX 2023 & Student of the Institute",
     },
   ];
 
   const interests = [
-    "Backend Systems",
-    "Distributed Architectures",
-    "Low-Latency Caching & Concurrency",
-    "AI Retrieval (RAG)",
-    "System Design & Scalability",
-    "Docker & Cloud Automation",
+    "Scalable Microservices",
+    "Distributed Task Orchestration",
+    "Event-Driven Architectures",
+    "RAG & LLM Integration",
+    "Concurrency & Multithreading",
+    "Docker & Cloud CI/CD",
   ];
 
   return (
@@ -55,15 +55,14 @@ export const About = () => {
         <ScrollAnimation className="space-y-6">
           <div className="space-y-4">
             <p className="text-gray-300 leading-relaxed">
-              Hi! I'm <strong className="text-white">Dhiraj Wasu</strong>, a Computer Science Engineering student at{" "}
-              <span className="text-white font-medium">Shri Guru Gobind Singhji Institute of Engineering and Technology (SGGSIE&T), Nanded</span>.
-              My work sits at the intersection of backend engineering, distributed systems, and intelligent automation.
+              Hi! I'm <strong className="text-white">Dhiraj Vinod Wasu</strong>, a Software Engineer and Computer Science Engineering undergraduate at{" "}
+              <span className="text-white font-medium">Shri Guru Gobind Singhji Institute of Engineering and Technology (SGGSIE&T), Nanded</span> (8.52 CGPA).
             </p>
             <p className="text-gray-300 leading-relaxed">
-              I hold a strong academic foundation with a <span className="text-white font-medium">9.44 CGPA</span> in my Diploma in Computer Science & Engineering from G.H. Raisoni Institute, followed by my B.Tech studies. I enjoy understanding how computing systems behave under the hood — memory layouts, concurrency, locking, and distributed state.
+              Currently, I am working as a <strong className="text-white">Software Engineer Intern at Connecticus Technologies</strong> in Pune, developing backend components of <em className="text-purple-300 not-italic font-medium">TrustOps Next</em> — building event-driven ingestion pipelines with REST gateways, duplicate detection, queue-based writers, rate limiting, retries, and comprehensive traceability graphs.
             </p>
             <p className="text-gray-300 leading-relaxed">
-              I specialize in Python, FastAPI, Django, C++, Java, Redis, and Docker. From architecting low-latency in-memory cache engines to building fault-tolerant distributed task queues and philosophy-aware RAG pipelines, I focus on engineering robust, high-throughput software.
+              Previously, I interned at <strong className="text-white">RGESIndia</strong> engineering AI decision pipelines and real-time LLM-integrated modules. I also hold a <span className="text-white font-medium">9.44 CGPA</span> in my Diploma in Computer Engineering from G.H. Raisoni Institute, where I was awarded Student of the Institute & Department and won 1st Place at DIPEX 2023.
             </p>
           </div>
 
@@ -73,10 +72,12 @@ export const About = () => {
               <h3 className="text-2xl font-semibold mb-4 gradient-text">Quick Facts</h3>
               <ul className="list-none space-y-3">
                 {[
-                  "Based in Nanded & Nagpur, Maharashtra, India",
-                  "B.Tech in Computer Science & Engineering (SGGSIE&T)",
-                  "Diploma in CSE (G.H. Raisoni) — 9.44 CGPA",
-                  "Focus: Systems, Concurrency, and Distributed AI",
+                  "Based in Pune & Nanded, Maharashtra, India",
+                  "Software Engineer Intern at Connecticus Technologies",
+                  "B.Tech in CSE (SGGSIE&T) — 8.52 CGPA",
+                  "Diploma in Computer Engineering (G.H. Raisoni) — 9.44 CGPA",
+                  "Secondary School (St. Joseph's Convent) — 79.80%",
+                  "Focus: Microservices, Distributed Systems & Grounded AI (RAG)",
                 ].map((fact) => (
                   <motion.li key={fact} className="flex items-center space-x-2 text-gray-300">
                     <span className="w-2 h-2 bg-white rounded-full flex-shrink-0" />

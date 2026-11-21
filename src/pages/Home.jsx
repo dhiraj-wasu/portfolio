@@ -81,7 +81,7 @@ export const Home = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Computer Science Engineering student passionate about backend systems, distributed architectures, and intelligent automation.
+          Software Engineer building scalable microservices, distributed task orchestration frameworks, and grounded AI-powered applications.
         </motion.p>
 
         {/* Action Buttons & Email Pill */}

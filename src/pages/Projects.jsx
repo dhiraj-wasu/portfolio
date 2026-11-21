@@ -5,25 +5,25 @@ import ScrollAnimation from "../components/ScrollAnimation";
 export const Projects = () => {
   const projects = [
     {
-      title: "Anuvada AI — Guidance System",
-      description: "Philosophy-aware RAG system featuring intent-based source routing and quote-faithful retrieval to deliver doctrinally consistent guidance without hallucination.",
+      title: "Anuvada: A Philosophy-Aware Guidance System",
+      description: "Intent-driven RAG system routing user queries between canonical texts based on problem vs concept classification, preventing cross-book hallucination with quote-faithful retrieval and grounded LLM explanations.",
       image: "/assets/project-1-BPjpZffZ.png",
       github: "https://github.com/dhiraj-wasu/Anuvada_AI-A-Philosophy-Aware-Guidance-System",
-      tags: ["Python", "FastAPI", "RAG", "LLMs", "Vector DB"],
+      tags: ["LLM", "RAG", "Qdrant", "Python", "FastAPI"],
     },
     {
-      title: "AI Mesh System with Queue Distribution",
-      description: "Distributed AI task orchestration system with FastAPI, Redis fault-tolerant queues, dynamic worker heartbeats, task retries, and automated load scaling.",
+      title: "AI Mesh System with Queue-Based Distribution",
+      description: "Distributed auto-scaling backend task framework with Redis multi-queue isolation, complexity-aware scheduling, dynamic worker scaling (1→8 workers), dead-letter queues, and heartbeat monitoring.",
       image: "/assets/project-2-C-wKW9ir.png",
       github: "https://github.com/dhiraj-wasu/AI-Mesh-System-with-Queue-Based-Distribution",
-      tags: ["FastAPI", "Redis", "Distributed Systems", "Task Queues", "Python"],
+      tags: ["FastAPI", "Redis", "Docker", "Distributed Systems", "Task Queues"],
     },
     {
-      title: "ZeroTrust Defender (AI Ransomware Detection)",
-      description: "AI-driven distributed ransomware defense architecture featuring real-time endpoint threat detection, automated isolation, and centralized threat intelligence orchestration (EDR + SOAR).",
-      image: "/assets/project-3-CaiZL8p_.png",
-      github: "https://github.com/dhiraj-wasu/ZeroTrust-Defender-AI-Driven-Ransomware-Detection",
-      tags: ["Python", "Cybersecurity", "EDR / SOAR", "Machine Learning", "Distributed Systems"],
+      title: "Automated Paperless Transparent College System",
+      description: "Full-stack college administration platform with digital student elections, priority facility booking for 15+ locations, AI complaint filtering, budget tracking, and real-time WebSockets, reducing manual processing by 80%.",
+      image: "/assets/project.png",
+      github: "https://github.com/dhiraj-wasu",
+      tags: ["React", "Django REST", "PostgreSQL", "WebSockets", "SQL"],
     },
     {
       title: "High-Performance In-Memory Cache",

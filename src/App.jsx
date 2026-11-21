@@ -38,20 +38,20 @@ const seoConfig = {
     description: "Welcome to Dhiraj Wasu's Classic Portfolio. Explore high-performance caches, distributed queues, and RAG architectures.",
   },
   "/about": {
-    title: "About - Dhiraj Wasu | Backend & Systems Engineer",
-    description: "Learn about Dhiraj Wasu — Computer Science Engineering student at SGGSIE&T, Nanded, specializing in backend and distributed systems.",
+    title: "About - Dhiraj Wasu | Software Engineer",
+    description: "Learn about Dhiraj Wasu — Software Engineer Intern at Connecticus Technologies, CSE undergraduate at SGGSIE&T (8.52 CGPA).",
   },
   "/education": {
     title: "Education - Dhiraj Wasu | B.Tech Computer Science",
-    description: "Academic journey of Dhiraj Wasu — B.Tech at SGGSIE&T (8.40 CGPA) and Diploma at G.H. Raisoni (9.44 CGPA).",
+    description: "Academic journey of Dhiraj Wasu — B.Tech at SGGSIE&T (8.52 CGPA) and Diploma at G.H. Raisoni (9.44 CGPA).",
   },
   "/academics": {
     title: "Education - Dhiraj Wasu | B.Tech Computer Science",
-    description: "Academic journey of Dhiraj Wasu — B.Tech at SGGSIE&T (8.40 CGPA) and Diploma at G.H. Raisoni (9.44 CGPA).",
+    description: "Academic journey of Dhiraj Wasu — B.Tech at SGGSIE&T (8.52 CGPA) and Diploma at G.H. Raisoni (9.44 CGPA).",
   },
   "/experience": {
-    title: "Experience - Dhiraj Wasu | Backend & Systems Engineer",
-    description: "Engineering experience, research projects, and technical honors of Dhiraj Wasu.",
+    title: "Experience - Dhiraj Wasu | Software Engineer Intern",
+    description: "Engineering experience of Dhiraj Wasu — Connecticus Technologies, RGESIndia, and DIPEX 2023 Winner.",
   },
   "/skills": {
     title: "Skills - Dhiraj Wasu | Python, C++, Java, Redis, FastAPI",

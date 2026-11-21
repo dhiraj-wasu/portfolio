@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowUp, ChevronDown, Code2, Coffee, ExternalLink,
@@ -49,6 +49,7 @@ function AssistantAnswer({ answer, navigate }) {
 
 export default function CoffeeeExperience({ theme, toggleTheme }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [history, setHistory] = useState([]);
@@ -75,8 +76,8 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
     }
   }, [botState, messages.length]);
 
-  const submitQuestion = (value = question) => {
-    const clean = value.trim();
+  const submitQuestion = useCallback((value = question) => {
+    const clean = (typeof value === "string" ? value : question).trim();
     if (!clean) return;
     const answer = resolveAnswer(clean);
     const topic = clean.length > 32 ? clean.slice(0, 32) + "…" : clean;
@@ -118,7 +119,29 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
         }, 1500);
       }, 700);
     }, 500);
-  };
+  }, [question]);
+
+  // Handle global brewbit:prompt custom event and URL search param prompt
+  useEffect(() => {
+    const handlePromptEvent = (e) => {
+      if (e.detail) {
+        submitQuestion(e.detail);
+      }
+    };
+    window.addEventListener("brewbit:prompt", handlePromptEvent);
+    return () => window.removeEventListener("brewbit:prompt", handlePromptEvent);
+  }, [submitQuestion]);
+
+  useEffect(() => {
+    const p = new URLSearchParams(location.search);
+    const promptParam = p.get("prompt");
+    if (promptParam) {
+      submitQuestion(promptParam);
+      p.delete("prompt");
+      const newQuery = p.toString() ? "?" + p.toString() : "";
+      navigate(location.pathname + newQuery, { replace: true });
+    }
+  }, [location.search, location.pathname, navigate, submitQuestion]);
 
   const newConversation = () => {
     setMessages([]);
@@ -148,6 +171,13 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
           {navigation.map(({ label, icon: Icon, prompt }) => (
             <button key={label} onClick={() => { submitQuestion(prompt); setSidebarOpen(false); }}><Icon size={16} />{label}</button>
           ))}
+          <button
+            className="coffeee-sidebar-classic-btn"
+            onClick={() => navigate("/classic")}
+            title="Visit Normal / Classic Multi-page Portfolio Site"
+          >
+            <ExternalLink size={15} /> Classic Site ↗
+          </button>
         </div>
         <div className="coffeee-sidebar-section coffeee-history">
           <span className="coffeee-sidebar-caption">RECENT CONVERSATIONS</span>
@@ -172,6 +202,15 @@ export default function CoffeeeExperience({ theme, toggleTheme }) {
             <ChevronDown size={15} className="coffeee-title-chevron" />
           </div>
           <div className="coffeee-topbar-right">
+            <button
+              type="button"
+              className="coffeee-topbar-classic-btn"
+              onClick={() => navigate("/classic")}
+              title="Visit Normal / Classic Portfolio Site"
+            >
+              <ExternalLink size={13} />
+              <span>Classic Site</span>
+            </button>
             <span className="coffeee-mode-label">PORTFOLIO GUIDE</span>
             <button className="coffeee-icon-button" onClick={toggleTheme} aria-label="Toggle theme">{theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}</button>
           </div>

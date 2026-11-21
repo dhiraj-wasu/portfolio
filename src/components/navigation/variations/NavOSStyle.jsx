@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Terminal, Compass, User, FolderCode, GraduationCap, Coffee,
-  ArrowUpRight, Moon, Sun, Sparkles, Menu, X
+  ArrowUpRight, Moon, Sun, Sparkles, Menu, X, ExternalLink
 } from "lucide-react";
 import NavStyleSwitcher from "../NavStyleSwitcher";
 
-export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
+export default function NavOSStyle({ theme, toggleTheme, newConversation, onPromptChat }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [currentTime, setCurrentTime] = useState("");
@@ -27,11 +27,11 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
   }, []);
 
   const osNavItems = [
-    { id: "home", label: "Home", path: "/", icon: Compass },
-    { id: "about", label: "About", path: "/about", icon: User, tour: "about" },
-    { id: "projects", label: "Projects", path: "/projects", icon: FolderCode, tour: "projects" },
-    { id: "experience", label: "Experience", path: "/academics", icon: GraduationCap, tour: "experience" },
-    { id: "brewbit", label: "Brewbit", action: "brewbit", icon: Coffee },
+    { id: "home", label: "Home", action: "home", icon: Compass, tour: "home" },
+    { id: "about", label: "About", prompt: "Tell me about Dhiraj.", icon: User, tour: "about" },
+    { id: "projects", label: "Projects", prompt: "Show me Dhiraj's projects.", icon: FolderCode, tour: "projects" },
+    { id: "experience", label: "Experience", prompt: "Tell me about Dhiraj's education and experience.", icon: GraduationCap, tour: "experience" },
+    { id: "brewbit", label: "Brewbit", action: "brewbit", icon: Coffee, tour: "brewbit" },
   ];
 
   const handleItemClick = (item) => {
@@ -39,12 +39,23 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
       const p = new URLSearchParams(window.location.search);
       p.set("guide", "true");
       navigate(window.location.pathname + "?" + p.toString());
-    } else if (item.path) {
-      if (item.path === "/" && newConversation) {
+    } else if (item.action === "home" || item.id === "home") {
+      if (newConversation) {
         newConversation();
       } else {
-        navigate(item.path);
+        navigate("/");
       }
+    } else if (item.prompt) {
+      if (onPromptChat) {
+        onPromptChat(item.prompt);
+      } else {
+        window.dispatchEvent(new CustomEvent("brewbit:prompt", { detail: item.prompt }));
+        if (location.pathname !== "/") {
+          navigate("/?prompt=" + encodeURIComponent(item.prompt));
+        }
+      }
+    } else if (item.path) {
+      navigate(item.path);
     }
   };
 
@@ -82,10 +93,10 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
 
         {/* Center Island: Free-floating Main OS Launcher Dock (Truly Centered) */}
         <div className="os-island-center">
-          <nav className="os-nav-dock" aria-label="System launcher navigation">
+          <nav className="os-nav-dock" data-tour="nav-sections" aria-label="System launcher navigation">
             {osNavItems.map((item) => {
               const Icon = item.icon;
-              const isActive = item.path ? location.pathname === item.path : false;
+              const isActive = item.id === "home" && location.pathname === "/" && !location.search.includes("guide");
 
               return (
                 <motion.button
@@ -96,7 +107,7 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
                   onClick={() => handleItemClick(item)}
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
-                  title={item.label}
+                  title={item.prompt ? `Ask Brewbit: "${item.prompt}"` : item.label}
                 >
                   {isActive && (
                     <motion.span
@@ -128,6 +139,18 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
             <NavStyleSwitcher className="os-adjacent-switcher" />
 
             <span className="os-tray-divider" aria-hidden="true" />
+
+            {/* Switch to Classic Normal Portfolio Site */}
+            <Link
+              to="/classic"
+              className="os-tray-btn os-tray-classic"
+              data-tour="classic-site"
+              title="Visit Classic Full Portfolio Site"
+              aria-label="Visit classic portfolio site"
+            >
+              <ExternalLink size={13} className="os-classic-icon" />
+              <span className="os-classic-label">Classic Site</span>
+            </Link>
 
             {/* Brewbit Companion Daemon */}
             <button
@@ -201,7 +224,7 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
             <div className="os-mobile-list">
               {osNavItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = item.path ? location.pathname === item.path : false;
+                const isActive = item.id === "home" && location.pathname === "/" && !location.search.includes("guide");
 
                 return (
                   <button
@@ -217,10 +240,20 @@ export default function NavOSStyle({ theme, toggleTheme, newConversation }) {
                     <span className={`os-dock-dot ${isActive ? "is-active" : ""}`} aria-hidden="true" />
                     <Icon size={17} />
                     <span>{item.label}</span>
+                    {item.prompt && <span className="os-mobile-badge os-mobile-badge--prompt">prompt</span>}
                     {isActive && <span className="os-mobile-badge">ACTIVE</span>}
                   </button>
                 );
               })}
+
+              <Link
+                to="/classic"
+                className="os-mobile-classic-link"
+                onClick={() => setMobileOpen(false)}
+              >
+                <ExternalLink size={15} />
+                <span>Visit Classic Portfolio Site</span>
+              </Link>
             </div>
 
             <div className="os-mobile-bottom">

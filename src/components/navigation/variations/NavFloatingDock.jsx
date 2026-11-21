@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Compass, User, FolderCode, GraduationCap, Coffee,
-  ArrowUpRight, Moon, Sun, Sparkles, Menu, X
+  ArrowUpRight, Moon, Sun, Sparkles, Menu, X, ExternalLink
 } from "lucide-react";
 import NavStyleSwitcher from "../NavStyleSwitcher";
 
-export default function NavFloatingDock({ theme, toggleTheme, newConversation }) {
+export default function NavFloatingDock({ theme, toggleTheme, newConversation, onPromptChat }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navItems = [
-    { id: "home", label: "Home", path: "/", icon: Compass },
-    { id: "about", label: "About", path: "/about", icon: User, tour: "about" },
-    { id: "projects", label: "Projects", path: "/projects", icon: FolderCode, tour: "projects" },
-    { id: "experience", label: "Experience", path: "/academics", icon: GraduationCap, tour: "experience" },
-    { id: "brewbit", label: "Brewbit", action: "brewbit", icon: Coffee },
+    { id: "home", label: "Home", action: "home", icon: Compass, tour: "home" },
+    { id: "about", label: "About", prompt: "Tell me about Dhiraj.", icon: User, tour: "about" },
+    { id: "projects", label: "Projects", prompt: "Show me Dhiraj's projects.", icon: FolderCode, tour: "projects" },
+    { id: "experience", label: "Experience", prompt: "Tell me about Dhiraj's education and experience.", icon: GraduationCap, tour: "experience" },
+    { id: "brewbit", label: "Brewbit", action: "brewbit", icon: Coffee, tour: "brewbit" },
   ];
 
   const handleItemClick = (item) => {
@@ -25,12 +25,23 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
       const p = new URLSearchParams(window.location.search);
       p.set("guide", "true");
       navigate(window.location.pathname + "?" + p.toString());
-    } else if (item.path) {
-      if (item.path === "/" && newConversation) {
+    } else if (item.action === "home" || item.id === "home") {
+      if (newConversation) {
         newConversation();
       } else {
-        navigate(item.path);
+        navigate("/");
       }
+    } else if (item.prompt) {
+      if (onPromptChat) {
+        onPromptChat(item.prompt);
+      } else {
+        window.dispatchEvent(new CustomEvent("brewbit:prompt", { detail: item.prompt }));
+        if (location.pathname !== "/") {
+          navigate("/?prompt=" + encodeURIComponent(item.prompt));
+        }
+      }
+    } else if (item.path) {
+      navigate(item.path);
     }
   };
 
@@ -47,17 +58,17 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
             }}
             aria-label="Dhiraj Wasu Home"
           >
-            <span className="floating-brand-name">dhiraj.wasu</span>
-            <span className="floating-brand-dot">.</span>
+            <span className="floating-brand-name">BrewBit</span>
+            {/* <span className="floating-brand-dot">.</span> */}
           </button>
         </div>
 
         {/* Center Island: Free-floating Main Navigation Dock (Truly Centered) */}
         <div className="floating-island-center">
-          <nav className="floating-nav-dock" aria-label="Main navigation">
+          <nav className="floating-nav-dock" data-tour="nav-sections" aria-label="Main navigation">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = item.path ? location.pathname === item.path : false;
+              const isActive = item.id === "home" && location.pathname === "/" && !location.search.includes("guide");
 
               return (
                 <motion.button
@@ -68,7 +79,7 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
                   onClick={() => handleItemClick(item)}
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.97 }}
-                  title={item.label}
+                  title={item.prompt ? `Ask Brewbit: "${item.prompt}"` : item.label}
                 >
                   {isActive && (
                     <motion.span
@@ -97,6 +108,18 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
           <div className="floating-controls-dock">
             {/* Adjacent compact style switcher */}
             <NavStyleSwitcher className="floating-adjacent-switcher" />
+
+            {/* Switch to Classic Normal Portfolio Site */}
+            <Link
+              to="/classic"
+              className="floating-classic-link"
+              data-tour="classic-site"
+              title="Visit Classic Full Portfolio Site"
+              aria-label="Visit classic portfolio site"
+            >
+              <span>Classic Site</span>
+              <ExternalLink size={14} />
+            </Link>
 
             {/* Resume button */}
             <a
@@ -147,7 +170,7 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
             <div className="floating-mobile-links">
               {navItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = item.path ? location.pathname === item.path : false;
+                const isActive = item.id === "home" && location.pathname === "/" && !location.search.includes("guide");
                 return (
                   <button
                     key={item.id}
@@ -161,9 +184,19 @@ export default function NavFloatingDock({ theme, toggleTheme, newConversation })
                   >
                     <Icon size={18} />
                     <span>{item.label}</span>
+                    {item.prompt && <span className="os-mobile-badge os-mobile-badge--prompt" style={{ marginLeft: "auto" }}>prompt</span>}
                   </button>
                 );
               })}
+
+              <Link
+                to="/classic"
+                className="floating-mobile-classic-link"
+                onClick={() => setMobileOpen(false)}
+              >
+                <ExternalLink size={15} />
+                <span>Visit Classic Portfolio Site</span>
+              </Link>
             </div>
             <div className="floating-mobile-actions">
               <NavStyleSwitcher />
